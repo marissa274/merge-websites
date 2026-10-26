@@ -1,0 +1,16 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import vm from 'node:vm';
+import ts from 'typescript';
+const exported={},calls=[];let approved=true;
+const bytes=new TextEncoder().encode('0123456789');
+const bucket={head:async()=>({size:10}),get:async(key,options)=>{calls.push({key,options});const r=options?.range;return{body:r?bytes.slice(r.offset,r.offset+r.length):bytes,size:r?r.length:10};}};
+vm.runInNewContext(ts.transpileModule(fs.readFileSync('app/api/media/[id]/route.ts','utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022}}).outputText,{exports:exported,Response,require(name){if(name==='cloudflare:workers')return{env:{BUCKET:bucket}};if(name==='../../../data')return{db:()=>({prepare(sql){assert.ok(sql.includes('public=1'));return{bind(){return this;},first:async()=>approved?{key:'previews/video',mime:'video/mp4'}:null};}})};throw Error(name);}});
+const get=range=>exported.GET(new Request('https://mk.test/api/media/test',{headers:range?{range}:{}}),{params:Promise.resolve({id:'test'})});
+let response=await get('bytes=2-5');assert.equal(response.status,206);assert.equal(response.headers.get('content-range'),'bytes 2-5/10');assert.equal(await response.text(),'2345');
+response=await get('bytes=-3');assert.equal(response.status,206);assert.equal(await response.text(),'789');
+response=await get('bytes=100-');assert.equal(response.status,416);
+response=await get('bytes=0-1,4-5');assert.equal(response.status,416);
+response=await get();assert.equal(response.status,200);assert.equal(await response.text(),'0123456789');
+approved=false;const prior=calls.length;response=await get('bytes=0-4');assert.equal(response.status,404);assert.equal(calls.length,prior,'private media never reaches the object store');
+console.log('PASS public-only streaming, bounded partial video ranges, suffix seek, malformed ranges and private-media denial');

@@ -1,0 +1,33 @@
+// Handler-level checks; focus trapping and rendering remain browser verification tasks.
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import vm from 'node:vm';
+import ts from 'typescript';
+import {model} from './collection-model.mjs';
+const state=[],refs=[];let cursor=0,rc=0;const exported={};const patches=[];
+const popover=Object.fromEntries(['Root','Trigger','Portal','Positioner','Popup','Title','Close'].map(key=>[key,`Popover.${key}`]));
+vm.runInNewContext(ts.transpileModule(fs.readFileSync('app/collection-controls.tsx','utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,jsx:ts.JsxEmit.ReactJSX,target:ts.ScriptTarget.ES2022}}).outputText,{exports:exported,requestAnimationFrame:fn=>fn(),require(name){
+ if(name==='react')return {useState(initial){const i=cursor++;if(!(i in state))state[i]=initial;return[state[i],v=>state[i]=v];},useRef(){return refs[rc++]||=( {current:{focus(){}}} );}};
+ if(name==='react/jsx-runtime')return {jsx:(type,props)=>({type,props}),jsxs:(type,props)=>({type,props})};
+ if(name==='lucide-react')return new Proxy({},{get:()=>()=>null});
+ if(name==='@base-ui/react/popover')return {Popover:popover};
+ if(name==='./collection-model')return model;
+ throw Error(name);
+}});
+const walk=n=>!n||typeof n!=='object'?[]:[n,...[n.props?.children].flat(Infinity).flatMap(walk)];
+const text=n=>typeof n==='string'?n:n&&typeof n==='object'?[n.props?.children].flat(Infinity).map(text).join(''):'';
+const find=(tree,fn)=>walk(tree).find(fn);
+const render=()=>{cursor=rc=0;return exported.CollectionControls({filters:{...model.EMPTY_FILTERS},categories:['Beauty','Music'],active:0,update:p=>patches.push(p),toggle:(key,v)=>patches.push({key,v}),reset:()=>{}});};
+let tree=render();
+assert.equal(find(tree,n=>n.props?.className==='search-reveal').props.inert,true);
+find(tree,n=>n.props?.['aria-label']==='Open search').props.onClick();tree=render();
+assert.equal(find(tree,n=>n.props?.className==='search-reveal').props.inert,false);
+find(tree,n=>n.props?.id==='v2-search').props.onChange({target:{value:'music'}});assert.equal(patches.at(-1).query,'music');
+find(tree,n=>n.props?.className==='icon-search').props.onKeyDown({key:'Escape',preventDefault(){}});tree=render();
+assert.equal(find(tree,n=>n.props?.className==='search-reveal').props.inert,true);
+find(tree,n=>n.type===popover.Root).props.onOpenChange(true);tree=render();
+find(tree,n=>n.type==='button'&&text(n)==='CategoryAll').props.onClick();tree=render();
+find(tree,n=>n.type==='button'&&text(n)==='Music').props.onClick();assert.equal(patches.at(-1).v,'Music');
+find(tree,n=>n.type===popover.Root).props.onOpenChange(false);tree=render();
+assert.ok(find(tree,n=>n.type==='button'&&text(n)==='CategoryAll'),'dismiss resets the submenu');
+console.log('PASS search disclosure, inert hidden input, Escape, query updates, category submenu and dismiss reset');

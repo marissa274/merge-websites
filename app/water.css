@@ -1,0 +1,90 @@
+/* Hallmark · pre-emit critique: P4 H4 E3 S5 R5 V4 · browser review pending
+ * Existing brand and Marquee Bento preserved. Surface → single drop → splash → calm footer.
+ * Hero reaction is limited to pink/orange wave fronts; no filled cursor-following artwork.
+ */
+.water-home{position:relative;isolation:isolate;overflow:clip}
+.water-home>section{position:relative;z-index:1}
+.water-layer{position:absolute;inset:0;z-index:0;pointer-events:none}
+.water-stage{position:sticky;top:0;display:block;width:100%;height:100vh;height:100dvh;overflow:clip;pointer-events:none}
+.water-stage text{fill:var(--color-muted);font-family:var(--font-body);font-size:10px;letter-spacing:.1em}
+.water-stop-pink{stop-color:var(--water-pink)}
+.water-stop-orange{stop-color:var(--water-orange)}
+.water-stop-glint{stop-color:var(--water-glint)}
+.water-stop-rose{stop-color:var(--water-rose)}
+.water-stop-peach{stop-color:var(--water-peach)}
+.water-wave-halo,.water-wave-line,.water-impact-wave,.water-splash-fan{fill:none;stroke-linecap:round;stroke-linejoin:round}
+.water-wave-halo{stroke-width:8;opacity:.14}
+.water-wave-line{stroke-width:1.2;opacity:.95}
+.water-impact-wave{stroke:var(--water-impact-ink);stroke-width:1}
+.water-splash-fan{stroke-width:2}
+.water-drop-glint,.water-drop-reflect,.water-drop-refract{fill:none;stroke-linecap:round}
+.water-drop-glint{stroke:var(--water-glint);stroke-width:1.5;opacity:.85}
+.water-drop-reflect{stroke:var(--water-orange);stroke-width:2;opacity:.65}
+.water-drop-refract{stroke:var(--water-glint);stroke-width:.7;opacity:.20}
+.water-home:not([data-water-ready=true]) .water-finale{background:linear-gradient(150deg,var(--water-rose),var(--water-peach));border-radius:3% 4% 0 0/22px 28px 0 0}
+.water-home .water-finale{isolation:auto;padding-bottom:max(40px,env(safe-area-inset-bottom))}
+.water-footer a{white-space:nowrap}
+.water-wordmark{position:relative}
+.water-finale .round-cta{position:relative;z-index:2}
+.water-about-type{position:relative;z-index:1}
+.water-home .studio-description{color:var(--color-ink)}
+.water-home .hero-v2-bottom{background:var(--color-paper)}
+/* Anchors hold their hit areas; arrival, float and elastic response have separate layers. */
+.vibe-equalizer{gap:clamp(7px,1.1vw,18px)}
+.vibe-equalizer .vibe-bar{background:none;padding:0;transform:none;transition:none;animation:none!important;scale:1;min-width:44px;overflow:visible;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.vibe-arrive,.vibe-float,.vibe-surface{display:flex;width:100%;height:100%;border-radius:inherit}
+.vibe-surface{position:relative;flex-direction:column;align-items:center;justify-content:space-between;gap:18px;padding:28px 12px;background:var(--pill-color);overflow:clip;isolation:isolate}
+.vibe-bar-copy,.vibe-symbol,.vibe-arrow{position:relative;z-index:1}
+.vibe-arrow{display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:var(--pill-arrow-surface)}
+.vibe-arrow svg{width:21px;height:21px}
+.vibe-touchwave{position:absolute;z-index:0;display:block;width:90px;height:90px;border-radius:50%;border:1px solid currentColor;background:var(--pill-arrow-surface);opacity:0;pointer-events:none}
+.vibe-bar:focus-visible{outline-offset:8px}
+.vibe-bar:focus-visible .vibe-arrow,.vibe-bar:active .vibe-arrow{background:var(--equalizer-ink);color:var(--pill-color)}
+.vibe-bar:focus-visible .vibe-float{animation-play-state:paused!important}
+@media(hover:hover){.vibe-bar:hover .vibe-arrow{background:var(--equalizer-ink);color:var(--pill-color)}}
+@media(prefers-reduced-motion:no-preference){
+ html:not([data-motion=reduced]) .vibe-surface{transform:translate(var(--pill-x,0px),var(--pill-y,0px)) rotate(var(--pill-tilt,0deg));transition:transform 350ms var(--ease-polish),scale 350ms var(--ease-polish),border-radius 500ms var(--ease-out)}
+ html:not([data-motion=reduced]) .vibe-arrow{transition:background-color 150ms var(--ease-polish),color 150ms var(--ease-polish),transform 300ms var(--ease-out)}
+ html:not([data-motion=reduced]) .vibe-symbol{transform:translate(calc(var(--pill-x,0px)*-.35),calc(var(--pill-y,0px)*-.35));transition:transform 350ms var(--ease-polish)}
+ html:not([data-motion=reduced]) .vibe-bar:active .vibe-surface{scale:.96;transition-duration:150ms;transition-timing-function:ease-out}
+ html:not([data-motion=reduced]) .vibe-equalizer[data-entered=true] .vibe-arrive{animation:water-pill-arrive 600ms var(--ease-out) both;animation-delay:calc(var(--bar-i)*70ms)}
+ html:not([data-motion=reduced]) .vibe-equalizer.is-visible .vibe-float{animation:water-note 11.7s var(--ease-in-out) infinite;animation-delay:-.5s}
+ html:not([data-motion=reduced]) .vibe-bar:nth-child(2) .vibe-float{animation-name:water-note-low;animation-duration:13.1s;animation-delay:-7.2s}
+ html:not([data-motion=reduced]) .vibe-bar:nth-child(3) .vibe-float{animation-duration:14.3s;animation-delay:-4.1s}
+ html:not([data-motion=reduced]) .vibe-bar:nth-child(4) .vibe-float{animation-name:water-note-low;animation-duration:12.7s;animation-delay:-10.4s}
+ html:not([data-motion=reduced]) .vibe-bar:nth-child(5) .vibe-float{animation-duration:15.9s;animation-delay:-8.8s}
+ html:not([data-motion=reduced]) .vibe-bar:nth-child(6) .vibe-float{animation-name:water-note-low;animation-duration:14.9s;animation-delay:-2.6s}
+ html:not([data-motion=reduced]) .water-wordmark[data-entered=true]{animation:water-wordmark 700ms var(--ease-out) both}
+ html:not([data-motion=reduced]) .water-footer nav[data-entered=true] a{animation:water-link 300ms var(--ease-out) both;animation-delay:100ms}
+ html:not([data-motion=reduced]) .water-footer nav[data-entered=true] a:nth-child(2){animation-delay:200ms}
+ html:not([data-motion=reduced]) .water-footer nav[data-entered=true] a:nth-child(3){animation-delay:300ms}
+ html:not([data-motion=reduced]) .water-footer nav[data-entered=true] a:nth-child(4){animation-delay:400ms}
+ html:not([data-motion=reduced]) .water-footer nav[data-entered=true] a:nth-child(5){animation-delay:500ms}
+ @keyframes water-pill-arrive{from{opacity:.3;transform:translateY(calc(var(--pill-direction)*24px)) rotate(calc(var(--pill-direction)*1.5deg))}to{opacity:1;transform:none}}
+ @keyframes water-note{0%,24%,100%{transform:none}8%{transform:translateY(-5px) rotate(-.35deg)}16%{transform:translateY(2px) rotate(.2deg)}}
+ @keyframes water-note-low{0%,25%,100%{transform:none}9%{transform:translateY(4px) rotate(.3deg)}18%{transform:translateY(-3px) rotate(-.2deg)}}
+ @keyframes water-wordmark{0%{opacity:.3;transform:translateY(14px)}65%{opacity:1;transform:translateY(0)}100%{opacity:1;transform:none}}
+ @keyframes water-link{from{opacity:.3;transform:translateY(12px)}to{opacity:1;transform:none}}
+}
+@media(hover:hover) and (prefers-reduced-motion:no-preference){
+ html:not([data-motion=reduced]) .vibe-bar:hover .vibe-surface{scale:1.012 1.018;border-radius:47% 53% 49% 51%/24% 27% 24% 28%}
+ html:not([data-motion=reduced]) .vibe-bar:hover .vibe-arrow{transform:translate(2px,-3px)}
+ html:not([data-motion=reduced]) .vibe-bar:hover .vibe-float{animation-play-state:paused}
+}
+@media(max-width:59.99rem){.vibe-surface{padding:22px 8px}}
+@media(max-width:39.99rem){
+ .vibe-surface{padding:17px 4px;gap:14px}
+ .vibe-arrow{width:30px;height:30px}.vibe-arrow svg{width:17px;height:17px}
+ .water-stage text{font-size:9px}
+ .water-footer-base{font-size:12px}
+ .hero-motion-tools .nav-icon{width:44px;min-height:44px}
+ .water-home .water-finale{padding-bottom:max(28px,env(safe-area-inset-bottom))}
+}
+@media(max-width:22.49rem){
+ .vibe-equalizer{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:center;gap:22px 12px;min-height:0}
+ .vibe-equalizer .vibe-bar{max-width:none;width:100%;height:210px}
+ .vibe-equalizer .vibe-beauty,.vibe-equalizer .vibe-business{height:175px}
+ .vibe-equalizer .vibe-fashion{height:230px}
+}
+@media(prefers-reduced-motion:reduce){.water-home .water-about-type>span{opacity:1;transform:none}.water-stage .water-wave-line{display:none}}
+@media(forced-colors:active){.water-layer{display:none}.water-home .water-finale{color:CanvasText;background:Canvas}.water-footer{color:CanvasText}.vibe-surface{border:1px solid CanvasText}.vibe-arrow{border:1px solid CanvasText}}

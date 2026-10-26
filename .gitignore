@@ -1,0 +1,39 @@
+# Local exports and dependencies
+/archives/
+**/node_modules/
+**/.next/
+**/.vinext/
+**/out/
+/dist/
+/next-env.d.ts
+/outputs/
+/work/
+**/coverage/
+**/*.tsbuildinfo
+
+# Local credentials and runtime state
+.env*
+!.env.example
+!.env.*.example
+.dev.vars*
+*.pem
+*.key
+*.sqlite
+*.sqlite3
+*.db
+*.db-shm
+*.db-wal
+**/.wrangler/
+**/.sites-runtime/
+
+# Local tooling and OS state
+**/.codex/
+.DS_Store
+*.log
+
+# Local design-tool history
+/.hallmark/
+
+# Generated Python caches
+**/__pycache__/
+*.pyc

@@ -1,0 +1,21 @@
+/* Hallmark · macrostructure: Marquee Hero · theme: reference-led Emotion / Garaje
+ * genre: editorial immersive · nav: N4 menu dialog · footer: Ft7 launch list
+ * enrichment: authored SVG interlocking rings · pre-emit critique: P5 H5 E4 S5 R4 V5 */
+:root {
+ --color-paper:oklch(96% .021 297); --color-paper-2:oklch(93% .031 297);
+ --color-ink:oklch(22% .035 295); --color-muted:oklch(43% .045 295);
+ --color-accent:oklch(48% .2 296); --color-accent-ink:oklch(98% .012 297);
+ --color-rule:oklch(80% .032 297); --color-focus:oklch(46% .19 296);
+ --color-dark:oklch(21% .028 295); --color-light:oklch(96% .021 297);
+ --color-dark-muted:oklch(78% .025 295); --color-dark-rule:oklch(43% .036 295);
+ --color-error:oklch(42% .16 28); --color-success:oklch(34% .09 150);
+ --color-silver:oklch(89% .025 285); --color-shadow:oklch(24% .04 295 / .13);
+ --color-clear:oklch(96% .021 297 / 0); --color-overlay:oklch(21% .028 295 / .5);
+ --color-play:oklch(90% .045 297); --color-dot:oklch(71% .04 297);
+ --font-display:'Instrument Serif',serif; --font-body:'IBM Plex Sans',sans-serif;
+ --space-xs:.25rem; --space-sm:.5rem; --space-md:1rem; --space-lg:1.5rem; --space-xl:2rem; --space-2xl:3rem; --space-3xl:4rem; --space-4xl:6rem; --space-5xl:8rem;
+ --text-sm:.75rem; --text-base:1rem; --text-md:1.25rem; --text-title:clamp(2.75rem,6vw,5.25rem); --text-display:clamp(3.5rem,7.5vw,6rem);
+ --ease-out:cubic-bezier(.16,1,.3,1); --ease-in:cubic-bezier(.7,0,.84,0); --ease-in-out:cubic-bezier(.65,0,.35,1);
+ --dur-fast:180ms; --dur-medium:450ms; --radius-small:.25rem; --radius-card:1rem;
+ --page-gutter:clamp(1.25rem,4vw,4rem); --page-max:1600px;
+}

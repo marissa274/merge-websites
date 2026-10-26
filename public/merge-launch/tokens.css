@@ -1,0 +1,42 @@
+/* Hallmark · macrostructure: Manifesto · theme: Sport · genre: editorial
+ * tone: community developer launch · anchor hue: vermilion
+ * nav: N9 Edge-aligned minimal · footer: Ft1 Mast-headed · enrichment: none
+ * audience: developers · use: event launch · inferred identity: Merge concept
+ * Hallmark · pre-emit critique: P5 H5 E4 S4 R5 V5 */
+:root {
+  --color-paper: oklch(95.4% .013 87);
+  --color-ink: oklch(20.7% .012 59);
+  --color-accent: oklch(55% .207 30);
+  --color-accent-ink: oklch(97% .008 80);
+  --color-paper-2: oklch(91% .018 87);
+  --color-muted: oklch(43% .012 59);
+  --color-rule: oklch(75% .018 87);
+  --color-dark-rule: oklch(43% .012 59);
+  --color-focus: oklch(44% .17 260);
+  --color-error: oklch(44% .18 28);
+  --color-success: oklch(36% .09 155);
+  --color-transparent: oklch(0% 0 0 / 0);
+  --font-display: 'Big Shoulders Display', 'Impact', sans-serif;
+  --font-body: 'IBM Plex Sans', sans-serif;
+  --space-xs: .25rem;
+  --space-sm: .5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  --space-3xl: 4rem;
+  --space-4xl: 6rem;
+  --text-sm: .8125rem;
+  --text-base: 1rem;
+  --text-md: 1.25rem;
+  --text-section: clamp(2.5rem, 5.5vw, 4.5rem);
+  --text-display: clamp(3.75rem, 8vw, 6rem);
+  --ease-out: cubic-bezier(.16, 1, .3, 1);
+  --ease-in: cubic-bezier(.7, 0, .84, 0);
+  --ease-in-out: cubic-bezier(.65, 0, .35, 1);
+  --dur-fast: 160ms;
+  --rule-thin: 1px;
+  --radius-none: 0;
+}
+
+:root{--color-lan-paper:oklch(19% .014 150);--color-lan-ink:oklch(94% .012 100);--color-lan-accent:oklch(84% .19 126);--color-lan-surface:oklch(23% .017 150);--color-lan-rule:oklch(44% .025 150);--color-lan-muted:oklch(78% .02 150);--color-ctf-paper:oklch(19% .025 260);--color-ctf-ink:oklch(95% .01 250);--color-ctf-accent:oklch(80% .11 220);--color-ctf-surface:oklch(23% .03 260);--color-ctf-rule:oklch(43% .03 260);--color-ctf-muted:oklch(78% .02 250);--color-event-error:oklch(80% .1 28);--color-event-success:oklch(84% .13 145);--space-event:clamp(4rem,8vw,7rem)}
