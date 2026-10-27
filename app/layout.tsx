@@ -9,6 +9,9 @@ import './collection-refinement.css';
 import './website-detail.css';
 import './personalize.css';
 import './auth.css';
+import './about.css';
+import './contact.css';
+import './pricing.css';
 import { Header, Footer } from './ui';
 export const metadata: Metadata = {
     metadataBase: new URL('https://mek-lab-studio.sasabelle.chatgpt.site'),

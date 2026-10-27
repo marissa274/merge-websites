@@ -1,6 +1,24 @@
-/* Hallmark · macrostructure: Staggered Poster Shelf · theme: existing MK LAB
+/* Hallmark · pre-emit critique: P4 H4 E4 S5 R5 V4
+ * macrostructure: Staggered Poster Shelf · theme: existing MK LAB
  * Reference: user-supplied COLLINS captures. Original MK LAB artwork and product routes.
  * Code critique: P4 H4 E4 S5 R4 V4. Actual browser rendering remains to be verified. */
+.collection-shelf .gallery-results-meta{justify-content:flex-end}
+.collection-shelf .exhibit-work{perspective:1500px}
+.collection-shelf .exhibit-card{transform-origin:center bottom}
+.collection-shelf .exhibit-work:focus-within{z-index:5}
+/* A stable hit area surrounds the card; its artwork, caption and actions tilt together. */
+@media(prefers-reduced-motion:no-preference){
+ html:not([data-motion=reduced]) .collection-shelf .exhibit-card{transition:transform 800ms var(--ease-out)}
+ html:not([data-motion=reduced]) .collection-shelf .exhibit-work:has(:focus-visible) .exhibit-card{transform:rotateX(-10deg)}
+ html:not([data-motion=reduced]) .collection-shelf .exhibit-work:has(a:active,button:not(:disabled):active) .exhibit-card{transform:rotateX(0deg)}
+}
+@media(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){
+ .collection-shelf .exhibit-work:hover{z-index:5}
+ html:not([data-motion=reduced]) .collection-shelf .exhibit-work:hover .exhibit-card{transform:rotateX(-10deg)}
+ html:not([data-motion=reduced]) .collection-shelf .exhibit-work:has(a:active,button:not(:disabled):active) .exhibit-card{transform:rotateX(0deg)}
+ html:not([data-motion=reduced]) .collection-shelf .exhibit-work:hover .exhibit-preview>.mosaic-site,
+ html:not([data-motion=reduced]) .collection-shelf .exhibit-work:hover .exhibit-preview>img{transform:none}
+}
 .home-mosaic{max-width:1800px;padding-inline:clamp(16px,3vw,48px)}
 .home-mosaic-gallery{position:relative;isolation:isolate}
 .home-mosaic-gallery .collection-atmosphere{position:absolute;inset:-24px calc(-1 * clamp(16px,3vw,48px)) -24px}

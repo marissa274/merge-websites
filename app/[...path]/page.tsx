@@ -1,3 +1,6 @@
+import { AboutPage } from '../about-page';
+import { ContactPage } from '../contact-page';
+import { PricingPage } from '../pricing-page';
 import { WebsiteDetail } from '../website-detail';
 import { parsePresentation, normalizePresentation, presentationKey, resolvePreviews, purchaseGaps } from '../product-presentation';
 import { studies, conceptCovers } from '../studies';
@@ -14,7 +17,7 @@ import { db, config, listProducts, getSettings, ownedData, currentUser, isAdmin,
 import { Home, Collection, ProductDetail, Intro, Btn, FAQ, Concept, RequestForm, Cart, Account, Plans, Empty } from '../ui';
 import { Admin } from '../admin-ui';
 export const dynamic = 'force-dynamic';
-const titles: Record<string, string> = { '': 'Websites with a point of view', collection: 'Website collection', about: 'The studio', pricing: 'Pricing', subscriptions: 'Care plans', faq: 'Questions', contact: 'Contact', cart: 'Your bag', checkout: 'Checkout', login: 'Sign in', signup: 'Create an account', 'forgot-password': 'Reset your password', 'reset-password': 'Choose a new password', 'verify-email': 'Confirm your email', terms: 'Terms and conditions', privacy: 'Privacy policy', licenses: 'Website licenses', account: 'Your account', admin: 'Studio management', personalize: 'Personalize your website', concepts: 'Design concepts' };
+const titles: Record<string, string> = { '': 'Websites with a point of view', collection: 'Website collection', about: 'The Mind Behind MK LAB', pricing: 'Pricing', subscriptions: 'Care plans', faq: 'Questions', contact: 'Contact', cart: 'Your bag', checkout: 'Checkout', login: 'Sign in', signup: 'Create an account', 'forgot-password': 'Reset your password', 'reset-password': 'Choose a new password', 'verify-email': 'Confirm your email', terms: 'Terms and conditions', privacy: 'Privacy policy', licenses: 'Website licenses', account: 'Your account', admin: 'Studio management', personalize: 'Personalize your website', concepts: 'Design concepts' };
 export async function generateMetadata({ params }: {
     params: Promise<{
         path?: string[];
@@ -81,9 +84,9 @@ export default async function Page({ params, searchParams }: {
         return <WebsiteDetail project={{name:entry.name,slug:entry.slug,description:entry.description,category:entry.category,presentation,concept:true}} related={products.slice(0,3)}/>;
     }
     if (section === 'about')
-        return <main id="main"><div className="shell"><Intro title="Good design has a point of view.">MK LAB is an independent digital studio and website marketplace for people building something of their own.</Intro><div className="split section"><h2>A considered<br />way to begin.</h2><div className="prose">{settings.about ? <p style={{ whiteSpace: 'pre-wrap' }}>{settings.about}</p> : <><p>Some websites disappear into the background. Others tell you, in a moment, exactly who you’re dealing with.</p><p>MK LAB is built around the latter. The collection pairs purposeful layouts with thoughtful typography and room for your own identity. Choose an existing direction or work with the studio to make it your own.</p><p>Every project begins with the same question: what deserves to stand out?</p><div className="notice">The founder’s story and studio details are coming soon.</div></>}<Btn href="/contact">Start a conversation</Btn></div></div><div className="featured" style={{ paddingBottom: 40 }}><Concept kind="still-life"/><div className="feature-side"><p>From the studio<br />An editorial concept</p></div></div><div style={{ height: 100 }}/></div></main>;
+        return <AboutPage story={settings.about}/>;
     if (section === 'pricing')
-        return <main id="main" className="shell"><Intro title="Clear from the start.">Choose the starting point that fits. All prices are in CAD. Scope and deliverables are agreed before you commit.</Intro><div className="pricing-list section"><article className="plan"><div><h2>A website from<br />the collection</h2><p className="price" style={{ marginTop: 24 }}>{products.length ? `From ${new Intl.NumberFormat('en-CA', { style: 'currency', currency: 'CAD' }).format(Math.min(...products.map(p => p.price)) / 100)}` : 'Priced per design'}</p></div><p>Each website has its own price, license, platform requirements, and deliverables. You can review them on the listing before adding it to your bag.</p><Btn href="/collection">Browse websites</Btn></article><article className="plan"><div><h2>Make it yours</h2><p className="price" style={{ marginTop: 24 }}>{settings.personalizationPrice ? `From $${settings.personalizationPrice}` : 'Quoted to scope'}</p></div><p>Content, colors, typography, additional pages, and integrations. Tell the studio what you need. You’ll receive a defined scope and price for approval.</p><Btn href="/personalize/custom" secondary>Request a quote</Btn></article><article className="plan"><div><h2>Ongoing care</h2><p className="price" style={{ marginTop: 24 }}>From ${settings.basicPrice || '19'}<small> / month</small></p></div><p>Optional maintenance and support, with a defined allowance. Illustrative starting prices. Enrollment opens once recurring billing is configured.</p><Btn href="/subscriptions" secondary>Explore care plans</Btn></article></div><div className="notice">Hosting, domains, third-party subscriptions, and taxes are separate unless your listing or quote explicitly includes them.</div></main>;
+        return <PricingPage products={products} settings={settings}/>;
     if (section === 'subscriptions')
         return <Plans settings={settings}/>;
     if (section === 'faq')
@@ -98,15 +101,10 @@ export default async function Page({ params, searchParams }: {
             : entry ? { kind: 'concept', slug: entry.slug, name: entry.name, category: entry.category, image: conceptCovers[entry.slug], palette: normalizePresentation({}, entry.category, entry.tone).palette } : null;
         return <main id="main" className="shell"><Intro title={model ? `Make ${model.name} yours.` : 'Make it unmistakably you.'}>{model ? 'Shape the website you chose around your brand. Your estimate updates as you choose; nothing is charged.' : 'Every personalization starts from a website in the collection.'}</Intro><Personalize model={model} pricing={parsePricing(settings.personalizationPricing)} base={Math.round(Number(settings.personalizationPrice || 0) * 100)} user={user ? { fullName: user.fullName || user.displayName, email: user.email } : null}/></main>;
     }
-    if (section === 'contact' || section === 'personalize') {
-        const p = products.find(x => x.slug === path[1]);
-        if (section === 'personalize' && path[1] && path[1] !== 'custom' && !p)
-            notFound();
+    if (section === 'contact') {
         const query = await searchParams || {};
         const demo = typeof query.demo === 'string' ? (query.concept === '1' ? buildEntries([]).find(item => item.slug === query.demo) : products.find(item => item.slug === query.demo)) : undefined;
-        const conceptSlug = (await searchParams || {}).concept;
-        const concept = typeof conceptSlug === 'string' ? buildEntries([]).find(entry => entry.slug === conceptSlug) : undefined;
-        return <main id="main" className="shell"><Intro title={section === 'contact' ? 'Tell us what’s next.' : 'Make it unmistakably you.'}>{section === 'contact' ? 'A website, a question, an idea in its early days. Start here.' : 'A good starting point, shaped around your brand. Share what you have in mind.'}</Intro><section className="split section"><aside><h2 style={{ fontSize: 36 }}>A conversation<br />comes first.</h2><p style={{ marginTop: 24, color: 'var(--color-muted)' }}>Share a little context and the studio will review your request. No work or payment starts until the scope is agreed.</p>{settings.contactEmail && <a className="text-link" href={`mailto:${settings.contactEmail}`}>{settings.contactEmail}<ArrowUpRight aria-hidden="true"/></a>}<div className="notice">Requests are saved securely to your account. Email notifications are not yet configured.</div></aside><RequestForm inquiry={demo ? {name:demo.name,slug:demo.slug,returnTo:`/contact?demo=${encodeURIComponent(demo.slug)}${query.concept === '1' ? '&concept=1' : ''}`} : undefined} type={section === 'contact' ? 'contact' : 'personalize'} user={user} product={p} concept={concept ? { name: concept.name, slug: concept.slug } : undefined} basePrice={Number(settings.personalizationPrice || 0) * 100}/></section></main>;
+        return <ContactPage prefill={{ name: user?.fullName || user?.displayName, email: user?.email, message: demo ? `I would like a private demo of ${demo.name} (${demo.slug}). Here is what I would like to explore: ` : undefined }}/>;
     }
     if (section === 'cart' || section === 'checkout') {
         if (path[1] === 'success')

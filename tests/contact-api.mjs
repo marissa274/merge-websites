@@ -1,0 +1,51 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import vm from 'node:vm';
+import { DatabaseSync } from 'node:sqlite';
+import { webcrypto } from 'node:crypto';
+import ts from 'typescript';
+
+function moduleAt(path, imports) {
+    const exports = {};
+    const code = ts.transpileModule(fs.readFileSync(path, 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 } }).outputText;
+    vm.runInNewContext(code, { exports, require: name => imports[name], Response, Request, URL, TextDecoder, TextEncoder, crypto: webcrypto });
+    return exports;
+}
+const model = moduleAt('app/contact-model.ts', {});
+const sql = new DatabaseSync(':memory:');
+sql.exec('CREATE TABLE inquiries(id TEXT PRIMARY KEY, user_id TEXT NOT NULL, name TEXT NOT NULL, email TEXT NOT NULL, subject TEXT NOT NULL, body TEXT NOT NULL, created_at INTEGER NOT NULL)');
+let unavailable = false;
+const db = () => {
+    if (unavailable) throw Error('Unavailable');
+    return { prepare: query => ({ bind: (...args) => ({ run: async () => { const result = sql.prepare(query).run(...args); return { success: true, meta: { changes: Number(result.changes) } }; } }) }) };
+};
+const route = moduleAt('app/api/contact/route.ts', { '../../contact-model': model, '../../data': { db } });
+const origin = 'https://studio.example';
+const payload = { name: 'Marissa Example', email: 'visitor@example.com', subject: 'Custom Website', message: 'I would like to discuss a website for my business.', website: '' };
+const request = (value = payload, headers = {}) => new Request(`${origin}/api/contact`, { method: 'POST', headers: { 'Content-Type': 'application/json', Origin: origin, 'CF-Connecting-IP': '192.0.2.8', ...headers }, body: JSON.stringify(value) });
+assert.equal((await route.POST(request(payload, { Origin: 'https://other.example' }))).status, 403);
+assert.equal((await route.POST(request(payload, { 'Content-Type': 'text/plain' }))).status, 415);
+assert.equal((await route.POST(request({ ...payload, message: 'x'.repeat(17000) }))).status, 413);
+assert.equal((await route.POST(request({ ...payload, website: 'spam.example' }))).status, 400);
+assert.equal((await route.POST(request({ ...payload, subject: 'Injected option' }))).status, 400);
+const invalid = await route.POST(request({ ...payload, email: 'not-an-email', message: 'tiny' }));
+assert.equal(invalid.status, 400);
+assert.ok((await invalid.json()).errors.email);
+assert.equal(Number(sql.prepare('SELECT count(*) AS n FROM inquiries').get().n), 0, 'invalid and trapped messages are never saved');
+const saved = await route.POST(request());
+assert.equal(saved.status, 201);
+assert.equal((await saved.json()).ok, true);
+const row = sql.prepare('SELECT * FROM inquiries').get();
+assert.equal(row.body, payload.message);
+assert.equal(row.email, payload.email);
+assert.ok(row.user_id.startsWith('contact:') && !row.user_id.includes('192.0.2.8'), 'rate limit key does not retain a raw IP address');
+for (let i = 0; i < 4; i++) assert.equal((await route.POST(request())).status, 201);
+assert.equal((await route.POST(request())).status, 429);
+assert.equal(Number(sql.prepare('SELECT count(*) AS n FROM inquiries').get().n), 5, 'server rate limiting caps stored messages');
+assert.equal((await route.POST(request({ ...payload, email: 'another@example.com' }))).status, 429, 'changing email does not evade the network limit');
+assert.equal((await route.POST(request(payload, { 'CF-Connecting-IP': '192.0.2.9' }))).status, 429, 'changing network does not evade the email limit');
+unavailable = true;
+const failed = await route.POST(request({ ...payload, email: 'new@example.com' }, { 'CF-Connecting-IP': '192.0.2.10' }));
+assert.equal(failed.status, 503);
+assert.ok(!(await failed.json()).ok, 'storage errors never produce a success response');
+console.log('PASS contact API: real SQLite persistence, origin checks, size bounds, validation, honeypot, email/network rate limits, hashed network keys and honest storage failures.');

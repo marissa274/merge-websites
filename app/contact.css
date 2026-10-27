@@ -1,0 +1,120 @@
+/* Hallmark · macrostructure: Answer the telephone · tone: cinematic editorial · anchor hue: burgundy/pink
+ * Pre-emit critique (code): P5 H4 E4 S5 R4 V5. Raster assets, moving handset and deforming cord are separate layers. */
+:root {
+    --contact-black: #080709;
+    --contact-burgundy: #650d2b;
+    --contact-wine: #47091e;
+    --contact-pink: #ff629a;
+    --contact-pastel: #f6b5ce;
+    --contact-blush: #ffd9e3;
+    --contact-muted: #bca9b3;
+    --contact-border: #9c6178;
+    --contact-field: #170d13;
+    --contact-orange: var(--fx-coral);
+}
+html:has(.contact-experience) { background: var(--contact-black); color-scheme: dark; }
+body:has(.contact-experience) {
+    --color-paper: var(--contact-black);
+    --color-ink: var(--contact-blush);
+    --color-muted: var(--contact-muted);
+    --color-rule: var(--contact-wine);
+    --color-accent: var(--contact-pink);
+    --color-focus: var(--contact-pastel);
+    --nav-surface: color-mix(in srgb, var(--contact-black) 90%, transparent);
+    --nav-border: color-mix(in srgb, var(--contact-pastel) 20%, transparent);
+    background: var(--contact-black);
+}
+.contact-experience { position: relative; isolation: isolate; overflow: clip; padding: 32px max(20px, env(safe-area-inset-left)) 64px; background: var(--contact-black); color: var(--contact-blush); }
+.contact-heading { position: relative; z-index: 2; text-align: center; margin-inline: auto; }
+.contact-eyebrow { color: var(--contact-pastel); font-size: 12px; font-weight: 500; letter-spacing: .18em; margin: 0 auto 18px; }
+.contact-heading h1 { font-family: var(--font-display); font-size: clamp(64px, 9vw, 136px); line-height: .98; letter-spacing: -.07em; font-weight: 600; }
+.contact-heading h1 span { color: var(--contact-pink); }
+.contact-access:focus-visible { position: relative; width: auto; height: auto; clip-path: none; overflow: visible; margin: 20px auto 0; padding: 12px 20px; border: 1px solid var(--contact-border); border-radius: 999px; background: var(--contact-black); color: var(--contact-blush); }
+.contact-close { display: inline-flex; align-items: center; justify-content: center; gap: 9px; min-height: 44px; border: 0; background: transparent; color: var(--contact-pastel); font-size: 13px; padding: 8px 12px; border-radius: 999px; }
+.contact-layout { position: relative; display: flow-root; width: min(100%, 1440px); min-height: clamp(700px, 66vw, 900px); margin: 120px auto 0; }
+.telephone-scene { position: absolute; width: 70%; left: 15%; top: 0; aspect-ratio: 1000 / 820; transform-origin: left center; }
+.telephone-ground { position: absolute; width: 74%; height: 12%; left: 13%; bottom: 2%; background: radial-gradient(ellipse, color-mix(in srgb, var(--contact-pink) 13%, transparent), transparent 70%); pointer-events: none; }
+.telephone-base { position: absolute; top: 18%; left: 0; width: 100%; height: auto; outline: none; }
+.telephone-cable { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; overflow: visible; }
+.telephone-cable path { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.telephone-cord-shadow { stroke: var(--contact-wine); stroke-width: 9; }
+.telephone-cord-highlight { stroke: color-mix(in srgb, var(--contact-pastel) 44%, var(--contact-burgundy)); stroke-width: 3; }
+.telephone-handset { position: absolute; width: 68%; aspect-ratio: 3; left: 16%; top: -12%; padding: 0; border: 0; border-radius: 40%; background: transparent; cursor: pointer; z-index: 4; transform-origin: center; }
+.telephone-handset img { width: 100%; height: 100%; object-fit: contain; outline: none; pointer-events: none; }
+.telephone-handset:focus-visible { outline: 3px solid var(--contact-pink); outline-offset: 12px; }
+.telephone-hover-label { position: absolute; left: 50%; top: calc(100% + 16px); translate: -50% 0; opacity: 0; color: var(--contact-pastel); font-size: 12px; pointer-events: none; }
+.telephone-handset:focus-visible .telephone-hover-label { opacity: 1; }
+.telephone-ring-waves { position: absolute; inset: -14% 10% auto; height: 30%; pointer-events: none; z-index: 3; }
+.telephone-ring-waves i { position: absolute; top: 10%; width: 14%; height: 75%; border: 2px solid transparent; border-radius: 50%; opacity: 0; }
+.telephone-ring-waves i:nth-child(1) { left: -3%; border-left-color: var(--contact-pink); }
+.telephone-ring-waves i:nth-child(2) { left: -8%; top: 0; height: 95%; border-left-color: var(--contact-orange); }
+.telephone-ring-waves i:nth-child(3) { right: -3%; border-right-color: var(--contact-pink); }
+.telephone-ring-waves i:nth-child(4) { right: -8%; top: 0; height: 95%; border-right-color: var(--contact-orange); }
+.contact-form-panel { position: relative; width: 44%; max-width: 560px; margin: 20px 2% 0 auto; visibility: hidden; padding: 0; border: 0; border-radius: 0; background: transparent; z-index: 5; }
+.contact-form-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 4px 8px; margin-bottom: 24px; }
+.contact-line-status { display: inline-flex; align-items: center; gap: 7px; color: var(--contact-pastel); font-size: 12px; }
+.contact-line-status i { width: 5px; height: 5px; border-radius: 50%; background: var(--contact-pink); }
+.contact-close { font-size: 11px; padding-inline: 0; color: var(--contact-muted); }
+.contact-close svg { width: 15px; height: 15px; }
+.contact-form-panel h2 { font-size: clamp(34px, 3.6vw, 52px); font-weight: 500; line-height: 1.05; letter-spacing: -.05em; margin-bottom: 30px; text-wrap: balance; }
+.contact-form-panel h2 span { color: var(--contact-pink); }
+.telephone-contact-form { display: grid; gap: 18px; }
+.contact-two-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.contact-field { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.contact-field label { color: var(--contact-blush); font-size: 13px; }
+.contact-field input, .contact-field select, .contact-field textarea { width: 100%; min-width: 0; min-height: 50px; border: 0; border-bottom: 1px solid var(--contact-border); border-radius: 0; background: transparent; color: var(--contact-blush); font-size: 16px; padding: 12px 0; }
+.contact-field select { cursor: pointer; }
+.contact-field option { background: var(--contact-field); color: var(--contact-blush); }
+.contact-field textarea { resize: vertical; min-height: 126px; max-height: 360px; }
+.contact-field textarea::placeholder { color: var(--contact-muted); }
+.contact-field :is(input, select, textarea):focus-visible { border-color: var(--contact-pink); outline: 2px solid var(--contact-pastel); outline-offset: 3px; }
+.contact-field [aria-invalid=true] { border-color: var(--contact-pink); }
+.contact-field small, .contact-form-note { font-size: 11px; color: var(--contact-muted); line-height: 1.6; }
+.contact-field-error, .contact-submit-error { color: var(--contact-pastel); font-size: 13px; line-height: 1.6; }
+.contact-submit-error:empty { display: none; }
+.contact-honeypot { display: none; }
+.contact-send { width: 100%; min-height: 56px; display: flex; align-items: center; justify-content: space-between; gap: 20px; border: 1px solid transparent; border-radius: 999px; padding: 14px 24px; color: var(--contact-wine); background: var(--contact-pink); font-size: 15px; font-weight: 600; }
+.contact-send:disabled { opacity: .65; cursor: wait; }
+.contact-form-note { margin: -6px 0 0; text-align: center; }
+.contact-confirmation { padding-block: 30px; }
+.contact-confirmation>svg { width: 36px; height: 36px; color: var(--contact-pink); margin-bottom: 24px; }
+.contact-confirmation h3 { font-size: 26px; margin-bottom: 20px; }
+.contact-confirmation p { color: var(--contact-muted); line-height: 1.8; }
+.contact-text-button { border: 0; border-bottom: 1px solid var(--contact-border); background: transparent; color: var(--contact-pastel); min-height: 44px; padding: 8px 0; font-size: 14px; }
+.contact-experience :is(button, a):focus-visible { outline: 3px solid var(--contact-pastel); outline-offset: 5px; }
+.contact-experience[data-animated=false][data-open=true] .telephone-scene { left: 11.5%; width: 70%; }
+.contact-experience[data-animated=false][data-open=true] .telephone-handset { left: -4.4%; top: 32.23%; rotate: -90deg; }
+.contact-experience[data-animated=false][data-open=true] .telephone-base { visibility: hidden; }
+.contact-experience[data-open=true] .telephone-ground { opacity: 0; }
+.contact-experience[data-open=true] .telephone-cable { mask-image: linear-gradient(to bottom, var(--contact-black) 0%, var(--contact-black) 80%, transparent 100%); }
+.contact-experience[data-open=true] .telephone-hover-label { display: none; }
+.contact-experience[data-animated=false][data-open=true] .contact-form-panel { visibility: visible; }
+@media (hover: hover) {
+    .telephone-handset:hover .telephone-hover-label { opacity: 1; }
+    .telephone-handset:hover img { filter: drop-shadow(0 0 12px color-mix(in srgb, var(--contact-pink) 32%, transparent)); }
+    .contact-close:hover { color: var(--contact-blush); }
+    .contact-send:not(:disabled):hover { background: var(--contact-pastel); }
+}
+@media (prefers-reduced-motion: no-preference) {
+    html:not([data-motion=reduced]) .contact-send { transition: background-color 150ms ease-out, color 150ms ease-out, scale 150ms ease-out; }
+    html:not([data-motion=reduced]) .contact-send:not(:disabled):active { scale: .96; }
+    .telephone-hover-label { transition: opacity 150ms ease-out; }
+}
+@media (max-width: 899px) {
+    .contact-experience { padding-top: 24px; padding-bottom: 48px; }
+    .contact-heading h1 { font-size: clamp(64px, 13vw, 104px); }
+    .contact-layout { min-height: 0; margin-top: 72px; }
+    .telephone-scene { position: relative; width: min(100%, 680px); margin-inline: auto; left: 0; }
+    .contact-form-panel { position: relative; top: auto; right: auto; width: 100%; margin: 40px auto 0; padding: 0; }
+    .contact-experience[data-open=false] .contact-form-panel { display: none; }
+    .contact-experience[data-animated=false][data-open=true] .telephone-scene { left: 0; width: min(100%, 680px); }
+    .contact-form-panel h2 { font-size: clamp(36px, 7vw, 48px); }
+}
+@media (max-width: 479px) {
+    .contact-experience { padding-inline: max(16px, env(safe-area-inset-left)); }
+    .contact-two-fields { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+    .contact-form-top { margin-bottom: 20px; }
+}
+@media (forced-colors: active) {
+    .contact-send, .contact-open, .contact-form-panel, .contact-field :is(input, select, textarea) { border: 1px solid ButtonText; }
+}

@@ -22,6 +22,7 @@ export function GalleryWork({ entry, onBuy }: { entry: Entry; onBuy: (p: Product
     }
     useEffect(() => { if (image.current?.complete && image.current.naturalWidth) sampleImage(image.current); }, [entry.id]);
     return <article className={`exhibit-work${entry.legacy ? ' exhibit-legacy' : ''}`} data-work={entry.id} data-tone={tone} aria-labelledby={`${entry.id}-name`}>
+        <div className="exhibit-card">
         <div className="exhibit-visual">
             <a className="exhibit-preview" href={href} aria-label={`Preview ${entry.name}`}>
                 {entry.product ? entry.product.image_id ? <img ref={image} src={`/api/media/${entry.product.image_id}`} alt={`${entry.name} website preview`} width={1200} height={900} loading="lazy" onLoad={event => sampleImage(event.currentTarget)}/> : <div className="exhibit-placeholder"><strong>{entry.name}</strong><span>Preview image coming soon</span></div> : <MosaicStudyPreview slug={entry.slug}/>}
@@ -33,6 +34,7 @@ export function GalleryWork({ entry, onBuy }: { entry: Entry; onBuy: (p: Product
             </div>
         </div>
         <div className="exhibit-caption"><div><h3 id={`${entry.id}-name`}><a href={href}>{entry.name}</a></h3><p>{entry.category}<span aria-hidden="true"> / </span><span>{entry.styles[0] || 'Website'}</span></p></div><div className="exhibit-price"><span id={`${entry.id}-status`}>{entry.price === null ? 'Concept · preview only' : `${money(entry.price)} CAD`}</span><a href={href} className="exhibit-arrow" aria-label={`Explore ${entry.name}`}><ArrowUpRight {...ip}/></a></div></div>
+        </div>
     </article>;
 }
 
