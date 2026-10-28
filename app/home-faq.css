@@ -1,0 +1,33 @@
+/* Home FAQ · rounded questions in the site palette, placed before the closing canvas. */
+.home-faq { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: clamp(32px, 6vw, 96px); align-items: start; padding-block: 40px 160px; }
+.home-faq-heading { position: sticky; top: 140px; }
+.home-faq-label { font-size: 12px; font-weight: 600; letter-spacing: .2em; color: var(--fx-pink); margin: 0 0 22px; }
+.home-faq-heading h2 { font-family: var(--font-display); font-size: clamp(42px, 5.4vw, 80px); font-weight: 600; line-height: 1.02; letter-spacing: -.06em; margin: 0 0 34px; }
+.home-faq-heading h2 span { color: var(--fx-pink); }
+html[data-theme=light] .home-faq-label, html[data-theme=light] .home-faq-heading h2 span { color: var(--muse-ink); }
+.home-faq-list { display: grid; gap: 12px; }
+.home-faq-list details { --faq-tone: var(--fx-pink); color: var(--fx-ink); background: var(--faq-tone); border-radius: 32px; }
+.home-faq-list details[data-tone=coral] { --faq-tone: var(--fx-coral); }
+.home-faq-list details[data-tone=lime] { --faq-tone: var(--fx-lime); }
+.home-faq-list details[data-tone=violet] { --faq-tone: var(--fx-violet); }
+.home-faq-list summary { display: flex; align-items: center; justify-content: space-between; gap: 20px; min-height: 72px; padding: 20px 26px 20px 30px; list-style: none; cursor: pointer; font-size: clamp(16px, 1.4vw, 19px); font-weight: 500; letter-spacing: -.02em; border-radius: inherit; }
+.home-faq-list summary::-webkit-details-marker { display: none; }
+.home-faq-list summary svg { flex: none; width: 36px; height: 36px; padding: 9px; border: 1px solid currentColor; border-radius: 50%; }
+.home-faq-list details[open] summary svg { rotate: 45deg; }
+.home-faq-list summary:focus-visible { outline: 3px solid var(--color-ink); outline-offset: 4px; }
+.home-faq-list details>p { max-width: 640px; margin: 0; padding: 0 30px 28px; font-size: 14px; line-height: 1.8; }
+@media (hover: hover) { .home-faq-list summary:hover svg { color: var(--faq-tone); background: var(--fx-ink); border-color: var(--fx-ink); } }
+@media (prefers-reduced-motion: no-preference) {
+    html:not([data-motion=reduced]) .home-faq-list summary svg { transition: rotate 250ms var(--ease-out), background-color 150ms ease-out, color 150ms ease-out; }
+}
+@media (max-width: 899px) {
+    .home-faq { grid-template-columns: minmax(0, 1fr); padding-block: 20px 110px; }
+    .home-faq-heading { position: static; }
+}
+@media (max-width: 479px) {
+    .home-faq-list details { border-radius: 24px; }
+    .home-faq-list summary { padding: 18px 18px 18px 22px; }
+    .home-faq-list summary svg { width: 32px; height: 32px; padding: 8px; }
+    .home-faq-list details>p { padding: 0 22px 24px; }
+}
+@media (forced-colors: active) { .home-faq-list details { border: 1px solid CanvasText; } }

@@ -69,17 +69,20 @@ export function ConceptCard({ kind }: {
     kind: string;
 }) { const still = kind === 'still-life'; return <article><a href={`/concepts/${kind}`} className={`project-stage ${still ? 'still' : ''}`} style={{ display: 'block' }} aria-label={`Explore ${still ? 'Still / Life' : 'Forma'} concept`}><Concept kind={kind}/></a><div className="project-caption"><div><h3>{still ? 'Still / Life' : 'Forma'}</h3><p>{still ? 'Editorial & lifestyle' : 'Architecture & interiors'}</p></div><div className="meta">Design concept<br />Preview only</div></div></article>; }
 export const faqs = [['What am I purchasing?', 'Each published listing describes its included pages, source files, platform requirements, and license. Design concepts are previews only and cannot be purchased.'], ['Can you make a website feel like my brand?', 'Yes. Choose a design and send a personalization request with your content, colors, and the changes you have in mind. The studio will confirm scope and a quote before work starts.'], ['Do I need a subscription?', 'No. Care plans are optional and separate from website purchases. Each plan has a defined support allowance; development is never unlimited.'], ['How will I receive my website?', 'After a payment is verified, eligible files appear in your account. Each download is checked against your purchase and uses a short-lived link. Personalized projects follow the agreed delivery schedule.'], ['Are hosting and domains included?', 'Hosting, domain names, platform subscriptions, third-party assets, and ongoing services are only included when a listing or quote explicitly says so.'], ['Can I use a website for a client?', 'Check the listing’s license before purchase. License terms must clearly define client use, the number of permitted websites, and redistribution restrictions.']];
+export function faqItems(custom?: string): string[][] {
+    try {
+        const v = JSON.parse(custom || 'null');
+        if (Array.isArray(v) && v.every(x => Array.isArray(x) && x.length === 2 && x.every(y => typeof y === 'string')))
+            return v;
+    }
+    catch { }
+    return faqs;
+}
 export function FAQ({ short = false, custom }: {
     short?: boolean;
     custom?: string;
 }) {
-    let items = faqs;
-    try {
-        const v = JSON.parse(custom || 'null');
-        if (Array.isArray(v) && v.every(x => Array.isArray(x) && x.length === 2 && x.every(y => typeof y === 'string')))
-            items = v;
-    }
-    catch { }
+    const items = faqItems(custom);
     return <div className="faq-list">{items.slice(0, short ? 3 : items.length).map(([q, a]) => <details key={q}><summary>{q}</summary><p>{a}</p></details>)}</div>;
 }
 export function Home({ settings, products }: {
