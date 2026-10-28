@@ -20,6 +20,7 @@ assert.ok(motion.telephoneCord(0).startsWith('M175.00,445.00'));
 const attachment = motion.telephoneCord(1).split(' L').at(-1).split(',').map(Number);
 assert.ok(attachment[0] > 330 && attachment[0] < 334 && attachment[1] > 645 && attachment[1] < 650, 'cord stays attached to the bottom of the vertical receiver');
 assert.ok(!/NaN|Infinity/.test(motion.telephoneCord(.5)));
+assert.ok(motion.telephoneCord(0, 1).endsWith('230.00,190.00'), 'the cord follows the handset down to the cradle');
 const imports = name => {
     if (name === 'react') return react;
     if (name === 'react/jsx-runtime') return jsx;

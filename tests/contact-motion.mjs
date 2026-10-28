@@ -7,9 +7,9 @@ function fixture() {
     const refs = [], effects = [], pending = [], timelines = [], observers = [], events = new Map();
     let refIndex = 0, effectIndex = 0, initialized = false, cleanup, focused = 0;
     const document = { hidden: false, addEventListener: (name, fn) => events.set(name, fn), removeEventListener: name => events.delete(name) };
-    const scene = {}, handset = {}, base = {}, cords = [{ setAttribute() {} }], waves = [{}];
+    const scene = {}, handset = {}, bounce = {}, base = {}, cords = [{ setAttribute() {} }], waves = [{}];
     const panel = { querySelectorAll: () => [{}], querySelector: () => ({ focus() { focused++; } }) };
-    const host = { querySelector: selector => selector.endsWith('h2') ? panel.querySelector() : selector.includes('data-phone-scene') ? scene : selector.includes('data-handset') ? handset : selector.includes('data-phone-base') ? base : panel, querySelectorAll: selector => selector.includes('data-phone-cord') ? cords : waves };
+    const host = { querySelector: selector => selector.endsWith('h2') ? panel.querySelector() : selector.includes('data-phone-scene') ? scene : selector.includes('data-handset-bounce') ? bounce : selector.includes('data-handset') ? handset : selector.includes('data-phone-base') ? base : panel, querySelectorAll: selector => selector.includes('data-phone-cord') ? cords : waves };
     class Timeline {
         constructor() { this.position = 0; this.running = false; this.callbacks = {}; this.steps = []; timelines.push(this); }
         to(...step) { this.steps.push(step); return this; }
@@ -22,10 +22,12 @@ function fixture() {
         play() { this.running = true; this.direction = 'forward'; return this; }
         reverse() { this.running = true; this.direction = 'reverse'; return this; }
         timeScale() { return this; }
+        time(value) { this.elapsed = value; return this; }
+        invalidate() { this.invalidated = true; return this; }
         kill() { this.running = false; this.killed = true; }
     }
     class Observer { constructor(callback) { this.callback = callback; observers.push(this); } observe(node) { this.node = node; } disconnect() { this.disconnected = true; } }
-    const gsap = { timeline: () => new Timeline(), set() {}, matchMedia: () => { let dispose; return { add: (conditions, callback) => { dispose = callback({ conditions: { desktop: true } }); }, revert: () => dispose?.() }; } };
+    const gsap = { timeline: () => new Timeline(), set() {}, getProperty: (node, key) => node[key] || 0, matchMedia: () => { let dispose; return { add: (conditions, callback) => { dispose = callback({ conditions: { desktop: true } }); }, revert: () => dispose?.() }; } };
     const exports = {};
     vm.runInNewContext(ts.transpileModule(fs.readFileSync('app/contact-motion.ts', 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 } }).outputText, {
         exports, document, IntersectionObserver: Observer,
@@ -42,15 +44,19 @@ function fixture() {
     });
     const scope = { current: host };
     const render = (open = false, motion = true, ringing = true) => { refIndex = 0; effectIndex = 0; exports.useTelephoneMotion(scope, open, motion, ringing); pending.splice(0).forEach(fn => fn()); };
-    return { render, timelines, observers, events, document, scene, handset, cleanup: () => cleanup?.(), focused: () => focused };
+    return { render, timelines, observers, events, document, scene, handset, bounce, cleanup: () => cleanup?.(), focused: () => focused };
 }
 const f = fixture(); f.render();
 const [ring, pickup] = f.timelines;
 assert.equal(ring.running, true, 'ringing starts after mounting and initial closed-state synchronization');
+assert.equal(ring.steps.filter(([node, vars]) => node === f.bounce && vars.yPercent === 17).length, 2, 'two hops touch the cradle during each ringing cycle');
+assert.equal(ring.steps.filter(([node, vars]) => node === f.bounce && vars.yPercent === 0).length, 2, 'each hop lifts into the air');
+assert.equal(ring.steps.filter(([node]) => node === f.bounce).at(-1)[1].yPercent, 17, 'the cycle ends on the cradle for the repeat pause');
 assert.equal(f.observers[0].node, f.scene, 'only the visible telephone controls ringing');
 f.render(true);
 assert.equal(ring.running, false);
 assert.equal(pickup.direction, 'forward');
+assert.equal(pickup.invalidated, true, 'pickup starts at the current bounce height');
 assert.ok(pickup.steps.some(([node, vars]) => node === f.handset && vars.xPercent < 0 && vars.rotation === -90), 'the floating handset arranges itself vertically on the left');
 pickup.progress(.4); f.render(false);
 assert.equal(pickup.direction, 'reverse', 'closing mid-lift reverses the same transition');

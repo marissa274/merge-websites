@@ -5,16 +5,16 @@ import { useGSAP } from '@gsap/react';
 
 if (typeof window !== 'undefined') gsap.registerPlugin(useGSAP);
 
-export function telephoneCord(progress: number) {
+export function telephoneCord(progress: number, bounce = 0) {
     // Attachment point follows the handset's actual center, percent translation and rotation.
     // The 1000 × 820 scene and 68%-wide, 3:1 handset match contact.css.
     const angle = -90 * progress * Math.PI / 180;
     const startY = 445 + 495 * progress;
     const end = {
         x: 500 - 204 * progress - 270 * Math.cos(angle) - 35.666667 * Math.sin(angle),
-        y: 14.933333 + 362.666667 * progress - 270 * Math.sin(angle) + 35.666667 * Math.cos(angle),
+        y: 14.933333 + 362.666667 * progress - 270 * Math.sin(angle) + 35.666667 * Math.cos(angle) + 139.4 * bounce,
     };
-    const control = { x: 18 - 65 * progress, y: 660 + 250 * progress };
+    const control = { x: 18 - 65 * progress, y: 660 + 250 * progress + 20 * bounce };
     const points = Array.from({ length: 121 }, (_, index) => {
         const t = index / 120, u = 1 - t;
         const x = u * u * 175 + 2 * u * t * control.x + t * t * end.x;
@@ -41,6 +41,7 @@ export function useTelephoneMotion(scope: RefObject<HTMLElement | null>, open: b
         if (!host || !motion) return;
         const scene = host.querySelector<HTMLElement>('[data-phone-scene]')!;
         const handset = host.querySelector<HTMLElement>('[data-handset]')!;
+        const bounce = host.querySelector<HTMLElement>('[data-handset-bounce]')!;
         const panel = host.querySelector<HTMLElement>('[data-contact-panel]')!;
         const base = host.querySelector<HTMLElement>('[data-phone-base]')!;
         const cords = host.querySelectorAll<SVGPathElement>('[data-phone-cord]');
@@ -50,16 +51,26 @@ export function useTelephoneMotion(scope: RefObject<HTMLElement | null>, open: b
         media.add({ desktop: '(min-width: 900px)', mobile: '(max-width: 899px)' }, context => {
             const desktop = !!context.conditions?.desktop;
             const deformation = { value: 0 };
-            const drawCord = () => cords.forEach(path => path.setAttribute('d', telephoneCord(deformation.value)));
-            const ring = gsap.timeline({ repeat: -1, repeatDelay: 2.2, paused: true });
-            ring.to(handset, { rotation: 1.4, x: 2, y: -4, duration: .07, repeat: 7, yoyo: true, ease: 'sine.inOut' }, 0)
+            const bounceRatio = () => Math.max(0, Math.min(1, Number(gsap.getProperty(bounce, 'yPercent')) / 17 || 0));
+            const drawCord = () => cords.forEach(path => path.setAttribute('d', telephoneCord(deformation.value, bounceRatio())));
+            const ring = gsap.timeline({ repeat: -1, repeatDelay: 1.8, paused: true });
+            // Begin and finish on the cradle so repeatDelay rests on the base.
+            gsap.set(bounce, { yPercent: 17 });
+            ring.to(bounce, { yPercent: 0, duration: .48, ease: 'power3.out', onUpdate: drawCord }, 0)
+                .to(bounce, { yPercent: 17, duration: .28, ease: 'power2.in', onUpdate: drawCord }, .48)
+                .to(bounce, { yPercent: 0, duration: .48, ease: 'power3.out', onUpdate: drawCord }, .88)
+                .to(bounce, { yPercent: 17, duration: .28, ease: 'power2.in', onUpdate: drawCord }, 1.36)
+                .to(handset, { rotation: 1.4, x: 2, duration: .055, repeat: 29, yoyo: true, ease: 'sine.inOut' }, 0)
                 .to(base, { x: 1, duration: .1, repeat: 5, yoyo: true, ease: 'sine.inOut' }, 0)
-                .to(cords, { x: 1, y: -2, duration: .1, repeat: 5, yoyo: true, ease: 'sine.inOut' }, 0)
-                .fromTo(waves, { opacity: 0, scale: .8 }, { opacity: .65, scale: 1.12, duration: .35, repeat: 1, yoyo: true, stagger: .05 }, 0)
-                .to(handset, { x: 0, y: 0, rotation: 0, duration: .12 }, .65);
+                .to(base, { y: 2, duration: .06, repeat: 1, yoyo: true, ease: 'power1.out' }, .76)
+                .to(base, { y: 2, duration: .06, repeat: 1, yoyo: true, ease: 'power1.out' }, 1.64)
+                .to(cords, { x: 1, duration: .055, repeat: 29, yoyo: true, ease: 'sine.inOut' }, 0)
+                .fromTo(waves, { opacity: 0, scale: .8 }, { opacity: .65, scale: 1.12, duration: .35, repeat: 3, yoyo: true, stagger: .05 }, 0)
+                .to(handset, { x: 0, y: 0, rotation: 0, duration: .12 }, 1.65);
             const pickup = gsap.timeline({ paused: true });
             pickup.to(scene, { xPercent: desktop ? -5 : 0, scale: desktop ? 1 : .92, transformOrigin: 'left center', duration: .65, ease: 'power3.inOut' }, 0)
                 .to(handset, { xPercent: -30, yPercent: 160, rotation: -90, duration: .65, ease: 'power3.inOut' }, 0)
+                .to(bounce, { yPercent: 0, duration: .35, ease: 'power2.out', onUpdate: drawCord }, 0)
                 .to(base, { autoAlpha: 0, duration: .3, ease: 'power2.out' }, .15)
                 .to(deformation, { value: 1, duration: .65, ease: 'power3.inOut', onUpdate: drawCord }, 0)
                 .fromTo(panel, { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: .3, ease: 'power2.out' }, .2)
@@ -68,13 +79,20 @@ export function useTelephoneMotion(scope: RefObject<HTMLElement | null>, open: b
                 if (!state.current.open && state.current.ringing && !document.hidden && visible && pickup.progress() === 0) ring.resume();
                 else ring.pause();
             };
-            pickup.eventCallback('onReverseComplete', () => { ring.restart().pause(); syncRing(); });
+            pickup.eventCallback('onReverseComplete', () => {
+                // Resume the downward hop at the restored height rather than snapping to its start.
+                ring.time(.48 + .28 * Math.cbrt(bounceRatio()), true).pause();
+                drawCord(); syncRing();
+            });
             pickup.eventCallback('onComplete', () => panel.querySelector<HTMLElement>('h2')?.focus({ preventScroll: desktop }));
             controller.current = {
                 open(value) {
                     if (!value && pickup.progress() === 0) { syncRing(); return; }
                     ring.pause();
-                    if (pickup.progress() === 0) gsap.set(handset, { rotation: 0, x: 0, y: 0 });
+                    if (pickup.progress() === 0) {
+                        gsap.set(handset, { rotation: 0, x: 0, y: 0 });
+                        pickup.invalidate();
+                    }
                     gsap.set(waves, { opacity: 0 });
                     if (value) pickup.timeScale(1).play(); else pickup.timeScale(1.5).reverse();
                 },

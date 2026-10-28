@@ -37,10 +37,12 @@ export function ContactPage({ prefill }: { prefill?: { name?: string; email?: st
                 <img className="telephone-base" data-phone-base src="/contact/telephone-base.png" width={1536} height={1024} alt="Glossy burgundy vintage telephone base with a pink push-button keypad." fetchPriority="high"/>
                 <svg className="telephone-cable" viewBox="0 0 1000 820" aria-hidden="true"><path className="telephone-cord-shadow" data-phone-cord d={telephoneCord(open && !motion ? 1 : 0)}/><path className="telephone-cord-highlight" data-phone-cord d={telephoneCord(open && !motion ? 1 : 0)}/></svg>
                 <div className="telephone-ring-waves" aria-hidden="true"><i data-ring-wave/><i data-ring-wave/><i data-ring-wave/><i data-ring-wave/></div>
+                <div className="telephone-bounce" data-handset-bounce>
                 <button ref={handset} data-handset className="telephone-handset" type="button" aria-label={open ? 'Put down phone' : 'Pick up the phone'} aria-expanded={open} aria-controls="contact-conversation" onClick={() => open ? close() : setOpen(true)} onPointerEnter={() => boost(true)} onPointerLeave={() => boost(false)}>
                     <img src="/contact/telephone-handset.png" width={2172} height={724} alt="" fetchPriority="high"/>
                     <span className="telephone-hover-label">{open ? 'Put down phone' : 'Pick up the phone'}</span>
                 </button>
+                </div>
             </div>
             <section id="contact-conversation" className="contact-form-panel" data-contact-panel inert={!open} aria-hidden={!open} aria-labelledby="contact-form-heading">
                 <TelephoneContactForm onClose={close} prefill={prefill}/>
