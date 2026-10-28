@@ -48,7 +48,7 @@ console.log('PASS log in: generic errors, correct password signs in, 8 failures 
 
 // Password reset by email
 r=await post({action:'forgot',email:'ana@example.test'});assert.equal(r.status,503,'no email service: honest message');
-env.RESEND_API_KEY='re_test';env.MAIL_FROM='MK LAB <hello@mk.test>';
+env.RESEND_API_KEY='re_test';env.MAIL_FROM='MK lab <hello@mk.test>';
 r=await post({action:'forgot',email:'nobody@example.test'});assert.equal(r.status,200);assert.equal(sent.length,0,'no email for unknown accounts, same answer');
 r=await post({action:'forgot',email:'ana@example.test'});assert.equal(r.status,200);assert.equal(sent.length,1);
 const link=sent[0].text.match(/https:\/\/mk\.test\/reset-password\?token=([\w-]+)/);assert.ok(link,'reset link');

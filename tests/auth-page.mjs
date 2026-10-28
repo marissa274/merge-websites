@@ -10,7 +10,7 @@ const load=(file,stubs={})=>{const exports={};vm.runInNewContext(ts.transpileMod
 const page=load('app/auth-page.tsx',{'./auth-form':load('app/auth-form.tsx')});
 const render=props=>renderToStaticMarkup(React.createElement(page.AuthPage,{mode:'login',returnTo:'/personalize/custom?concept=muse',concepts:12,user:null,google:true,mail:true,...props}));
 let html=render();
-assert.ok(html.includes('Sign in to <span class="auth-brand">MK LAB</span>'));
+assert.ok(html.includes('Sign in to <span class="auth-brand">MK lab</span>'));
 for(const part of ['type="email"','autoComplete="email"'.toLowerCase(),'type="password"','autocomplete="current-password"','Forgot the password?','>Login</button>','>OR</span>','Sign in with Google','Continue with ChatGPT'])assert.ok(html.toLowerCase().includes(part.toLowerCase()),part);
 assert.ok(html.includes('href="/api/auth/google?return_to=%2Fpersonalize%2Fcustom%3Fconcept%3Dmuse"'),'Google returns to where the visitor came from');
 assert.ok(html.includes('<label class="visually-hidden" for="email">Email address</label>'),'fields keep accessible labels');

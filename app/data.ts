@@ -44,7 +44,7 @@ export async function ownedData(user: ChatGPTUser) {
     ]);
     return { orders: results[0].results, requests: results[1].results, subscriptions: results[2].results, downloads: results[3].results, profile: results[4].results[0], messages: results[5].results, inquiries: results[6].results, items: results[7].results };
 }
-// The host's ChatGPT identity comes first; otherwise an MK LAB session (email + password or Google).
+// The host's ChatGPT identity comes first; otherwise an MK lab session (email + password or Google).
 export async function currentUser(): Promise<AccountUser | null> {
     const chatgpt = await getChatGPTUser();
     if (chatgpt) return { ...chatgpt, provider: 'chatgpt', verified: true };

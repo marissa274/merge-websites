@@ -3,7 +3,7 @@ import { AuthForm, SignOutButton } from './auth-form';
 const ip = { 'aria-hidden': true as const, strokeWidth: 1.5 };
 export type AuthMode = 'login' | 'signup' | 'forgot-password' | 'reset-password' | 'verify-email';
 type Tile = { kind: 'photo'; src: string; grow: number } | { kind: 'brand'; name: string; tone: string; grow: number } | { kind: 'fact'; figure: string; text: string; tone: string; grow: number };
-// The mosaic is decorative and uses only MK LAB's own material: studio photography, concept identities and two true facts.
+// The mosaic is decorative and uses only MK lab's own material: studio photography, concept identities and two true facts.
 function columns(concepts: number): Tile[][] {
     return [
         [{ kind: 'photo', src: '/still-life.jpg', grow: 3 }, { kind: 'brand', name: 'OFFGRID®', tone: 'violet', grow: 2 }, { kind: 'photo', src: '/architecture.jpg', grow: 3 }],
@@ -13,8 +13,8 @@ function columns(concepts: number): Tile[][] {
     ];
 }
 const COPY: Record<AuthMode, { title: [string, string]; lead: string }> = {
-    login: { title: ['Sign in to', 'MK LAB'], lead: 'Welcome back. Enter your details to reach your purchases, downloads and projects.' },
-    signup: { title: ['Create your', 'MK LAB account'], lead: 'One account for your purchases, downloads and conversations with the studio.' },
+    login: { title: ['Sign in to', 'MK lab'], lead: 'Welcome back. Enter your details to reach your purchases, downloads and projects.' },
+    signup: { title: ['Create your', 'MK lab account'], lead: 'One account for your purchases, downloads and conversations with the studio.' },
     'forgot-password': { title: ['Reset your', 'password'], lead: 'Enter the email of your account. We will send you a link to choose a new password.' },
     'reset-password': { title: ['Choose a new', 'password'], lead: 'Your new password signs you out everywhere else.' },
     'verify-email': { title: ['Confirm your', 'email'], lead: '' },
@@ -39,7 +39,7 @@ export function AuthPage({ mode, returnTo, concepts, user, google, mail, error, 
                 {tile.kind === 'photo' ? <img src={tile.src} alt="" width={800} height={1000} decoding="async"/> : tile.kind === 'brand' ? <span translate="no">{tile.name}</span> : <><strong>{tile.figure}</strong><p>{tile.text}</p></>}
             </div>)}</div>)}</div>
             <section className="auth-panel" aria-labelledby="auth-title">
-                <div className="auth-top"><a className="brand mk-wordmark auth-home" href="/" aria-label="MK LAB home" translate="no">mk<span className="logo-flower" aria-hidden="true">✳</span>lab</a>{!user && <p className="auth-switch">{other.prompt}<a href={other.href}>{other.label}</a></p>}</div>
+                <div className="auth-top"><a className="brand mk-wordmark auth-home" href="/" aria-label="MK lab home" translate="no">MK lab</a>{!user && <p className="auth-switch">{other.prompt}<a href={other.href}>{other.label}</a></p>}</div>
                 <div className="auth-body">
                     <h1 id="auth-title">{copy.title[0]} <span className="auth-brand">{copy.title[1]}</span></h1>
                     {copy.lead && !(user && mode !== 'reset-password') && <p className="auth-lead">{copy.lead}</p>}

@@ -150,7 +150,7 @@ export async function POST(request: Request) {
         return json({ error: 'Action not found.' }, 400);
     }
     catch (e) {
-        console.error('MEK LAB request failed', e instanceof Error ? e.message : 'unknown');
+        console.error('MK lab request failed', e instanceof Error ? e.message : 'unknown');
         return json({ error: 'Your changes could not be saved. Check the fields and try again.' }, 500);
     }
 }

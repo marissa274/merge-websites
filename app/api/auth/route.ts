@@ -11,7 +11,7 @@ async function signedIn(request: Request, userId: string, body: Record<string, u
 async function verificationMail(request: Request, userId: string, email: string) {
     if (!mailEnabled()) return;
     const link = `${new URL(request.url).origin}/verify-email?token=${await issueToken(userId, 'verify', 60 * 24)}`;
-    await sendMail(email, 'Confirm your MK LAB email', `Confirm your email for MK LAB: ${link}\n\nThis link expires in 24 hours.`, `<p>Confirm your email for MK LAB.</p><p><a href="${escapeHtml(link)}">Confirm my email</a></p><p>This link expires in 24 hours.</p>`);
+    await sendMail(email, 'Confirm your MK lab email', `Confirm your email for MK lab: ${link}\n\nThis link expires in 24 hours.`, `<p>Confirm your email for MK lab.</p><p><a href="${escapeHtml(link)}">Confirm my email</a></p><p>This link expires in 24 hours.</p>`);
 }
 export async function POST(request: Request) {
     // Same-origin requests only.
@@ -51,7 +51,7 @@ export async function POST(request: Request) {
             const identity = await DB().prepare("SELECT u.id FROM users u JOIN auth_identities i ON i.user_id=u.id WHERE lower(u.email)=? AND i.provider='password' LIMIT 1").bind(email).first<{ id: string }>();
             if (identity) {
                 const link = `${new URL(request.url).origin}/reset-password?token=${await issueToken(identity.id, 'reset', 60)}`;
-                await sendMail(email, 'Reset your MK LAB password', `Choose a new MK LAB password: ${link}\n\nThis link expires in 1 hour. If you did not ask for it, ignore this email.`, `<p>Choose a new MK LAB password.</p><p><a href="${escapeHtml(link)}">Reset my password</a></p><p>This link expires in 1 hour. If you did not ask for it, ignore this email.</p>`);
+                await sendMail(email, 'Reset your MK lab password', `Choose a new MK lab password: ${link}\n\nThis link expires in 1 hour. If you did not ask for it, ignore this email.`, `<p>Choose a new MK lab password.</p><p><a href="${escapeHtml(link)}">Reset my password</a></p><p>This link expires in 1 hour. If you did not ask for it, ignore this email.</p>`);
             }
             return json(sent);
         }

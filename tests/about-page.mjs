@@ -18,12 +18,12 @@ const bottom = html.indexOf('<figure', top + 1);
 assert.ok(top >= 0 && top < heading && heading < bottom, 'portraits bracket the text vertically in reading order');
 assert.equal((html.match(/<figure/g) || []).length, 2);
 assert.equal((html.match(/<h1/g) || []).length, 1);
-for (const text of ['ABOUT', 'The Mind', 'MK LAB', 'My ', 'Story', 'Philosophy', 'Process', 'Explore My Work', 'Contact Me']) assert.ok(html.includes(text), text);
+for (const text of ['ABOUT', 'The Mind', 'MK lab', 'My ', 'Story', 'Philosophy', 'Process', 'Explore My Work', 'Contact Me']) assert.ok(html.includes(text), text);
 assert.ok(html.includes('href="/collection"') && html.includes('href="/contact"'));
 assert.ok(html.includes('&lt;script&gt;alert(1)&lt;/script&gt;'), 'the admin story remains escaped text');
 assert.ok(!html.includes('<script>'));
 const defaultHtml = renderToStaticMarkup(React.createElement(exports.AboutPage, {}));
-assert.ok(defaultHtml.includes('MK LAB is my space'), 'an empty admin story has readable content');
+assert.ok(defaultHtml.includes('MK lab is my space'), 'an empty admin story has readable content');
 for (const placement of ['top', 'bottom']) {
     const path = `public/portraits/marissa-${placement}.png`;
     assert.ok(html.includes(`/portraits/marissa-${placement}.png`));

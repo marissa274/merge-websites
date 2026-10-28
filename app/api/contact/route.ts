@@ -45,6 +45,6 @@ export async function POST(request: Request) {
             .bind(crypto.randomUUID(), sender, values.name, values.email, values.subject, values.message, now, now - 3_600_000, sender, values.email).run();
         if (!result.success) throw new Error('Message was not saved');
         if (result.meta.changes === 0) return json({ error: 'You have reached the message limit. Please try again in an hour.' }, 429, { 'Retry-After': '3600' });
-        return json({ ok: true, message: 'Your message has been saved in the MK LAB studio inbox. Thank you for reaching out.' }, 201);
+        return json({ ok: true, message: 'Your message has been saved in the MK lab studio inbox. Thank you for reaching out.' }, 201);
     } catch { return json({ error: 'The studio inbox is temporarily unavailable. Your message has not been sent. Please try again.' }, 503); }
 }

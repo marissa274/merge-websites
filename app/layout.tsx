@@ -16,9 +16,9 @@ import './home-faq.css';
 import { Header, Footer } from './ui';
 export const metadata: Metadata = {
     metadataBase: new URL('https://mek-lab-studio.sasabelle.chatgpt.site'),
-    title: { default: 'MK LAB — Websites with a point of view', template: '%s — MK LAB' },
-    description: 'Designed to stand out. Built to be yours. Explore MK LAB, an independent creative studio and premium website marketplace.',
-    openGraph: { title: 'MK LAB', description: 'Designed to stand out. Built to be yours.', images: ['/architecture.jpg'] },
+    title: { default: 'MK lab — Websites with a point of view', template: '%s — MK lab' },
+    description: 'Designed to stand out. Built to be yours. Explore MK lab, an independent creative studio and premium website marketplace.',
+    openGraph: { title: 'MK lab', description: 'Designed to stand out. Built to be yours.', images: ['/architecture.jpg'] },
     icons: {
         icon: [
             { url: '/favicon-cocktail-32.png', type: 'image/png', sizes: '32x32' },

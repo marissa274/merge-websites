@@ -62,7 +62,7 @@ export function TelephoneContactForm({ onClose, prefill }: { onClose: () => void
                 <div className="contact-field" data-contact-reveal><label htmlFor="contact-message">Your Message</label><textarea id="contact-message" name="message" autoComplete="off" defaultValue={prefill?.message} required minLength={10} maxLength={5000} rows={4} aria-invalid={!!errors.message} aria-describedby={`contact-message-help${errors.message ? ' contact-message-error' : ''}`} placeholder="A little context, a big idea…"/><small id="contact-message-help">10–5,000 characters. Leave an email where the studio can reach you.</small>{feedback('message')}</div>
                 <div className="contact-honeypot" aria-hidden="true"><label htmlFor="contact-website">Leave this field empty</label><input id="contact-website" name="website" tabIndex={-1} autoComplete="off"/></div>
                 <button className="contact-send" type="submit" disabled={busy} data-contact-reveal>{busy ? 'Sending Message…' : 'Send Message'}<ArrowUpRight aria-hidden="true"/></button>
-                <p className="contact-form-note" data-contact-reveal>Your message is saved in the MK LAB studio inbox.</p>
+                <p className="contact-form-note" data-contact-reveal>Your message is saved in the MK lab studio inbox.</p>
                 <div ref={result} tabIndex={-1} role="alert" className="contact-submit-error">{error}</div>
             </form>}
     </>;

@@ -76,15 +76,15 @@ export function AboutPage({ story }: { story?: string }) {
             <Portrait placement="top"/>
             <header className="about-heading" data-about-reveal>
                 <p className="about-label">ABOUT</p>
-                <h1>The Mind<br/>Behind <span translate="no">MK LAB</span></h1>
-                <p className="about-intro">I’m Marissa, the creative mind behind MK LAB. I bring together design, personality and a little unexpected detail to create websites that feel like <em>someone</em>.</p>
+                <h1>The Mind<br/>Behind <span translate="no">MK lab</span></h1>
+                <p className="about-intro">I’m Marissa, the creative mind behind MK lab. I bring together design, personality and a little unexpected detail to create websites that feel like <em>someone</em>.</p>
             </header>
         </div>
         <div className="about-center">
             <div className="about-narrative">
                 <section className="about-chapter" aria-labelledby="about-story" data-about-reveal>
                     <h2 id="about-story">My <span>Story</span></h2>
-                    <p className={story?.trim() ? 'about-custom-story' : undefined}>{story?.trim() || 'MK LAB is my space to bring ideas into focus. It brings together the things I care about in design: a clear point of view, expressive details and room for individuality. Each website begins as a direction, ready to become part of someone else’s story.'}</p>
+                    <p className={story?.trim() ? 'about-custom-story' : undefined}>{story?.trim() || 'MK lab is my space to bring ideas into focus. It brings together the things I care about in design: a clear point of view, expressive details and room for individuality. Each website begins as a direction, ready to become part of someone else’s story.'}</p>
                 </section>
                 <section className="about-chapter" aria-labelledby="about-philosophy" data-about-reveal>
                     <h2 id="about-philosophy">My <span>Philosophy</span></h2>
@@ -99,7 +99,7 @@ export function AboutPage({ story }: { story?: string }) {
                     <h2 id="about-process">My <span>Process</span></h2>
                     <p>I start with the feeling and the purpose. Then I shape the visual direction, build the experience, and refine the details. From the first composition to the smallest interaction, every choice should belong to the same idea.</p>
                 </section>
-            <nav className="about-actions" aria-label="Explore MK LAB" data-about-reveal>
+            <nav className="about-actions" aria-label="Explore MK lab" data-about-reveal>
                 <a className="about-cta about-cta--primary" href="/collection">Explore My Work<ArrowUpRight aria-hidden="true" strokeWidth={1.5}/></a>
                 <a className="about-cta about-cta--secondary" href="/contact">Contact Me<ArrowUpRight aria-hidden="true" strokeWidth={1.5}/></a>
             </nav>

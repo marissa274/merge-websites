@@ -1,1 +1,1 @@
-export default function Loading() { return <main id="main" className="loading-layout" aria-busy="true" aria-label="Loading MK LAB…"><div className="skeleton" style={{ maxWidth: 700, height: 100 }}/><div className="skeleton" style={{ height: 360 }}/></main>; }
+export default function Loading() { return <main id="main" className="loading-layout" aria-busy="true" aria-label="Loading MK lab…"><div className="skeleton" style={{ maxWidth: 700, height: 100 }}/><div className="skeleton" style={{ height: 360 }}/></main>; }
