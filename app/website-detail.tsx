@@ -61,7 +61,7 @@ function Device({ kind, preview, project, companion }: { kind: DeviceKind; previ
     const content = preview ? <DeviceScreen kind={kind} preview={preview} name={project.name} setRatio={setRatio}/>
         : live ? <div className="device-live" role="img" aria-label={`${project.name} ${kind} layout`}><ConceptSite slug={project.slug} palette={palette} viewport={kind}/></div>
         : <div className="device-placeholder" role="img" aria-label={`${screen.label} screenshot not yet available`}><Icon {...ip}/><span>{`${screen.label} screenshot coming soon`}</span></div>;
-    const companionScreen = kind === 'mobile' ? null : companion ? companionShot(companion) : live ? <div className="device-live"><ConceptSite slug={project.slug} palette={palette} viewport="mobile"/></div> : null;
+    const companionScreen = kind !== 'desktop' ? null : companion ? companionShot(companion) : live ? <div className="device-live"><ConceptSite slug={project.slug} palette={palette} viewport="mobile"/></div> : null;
     return <figure className={`device-figure device-figure-${kind}`}>
         <figcaption className="device-label">{screen.label}</figcaption>
         <div className={`device-stage device-stage-${kind}`}>

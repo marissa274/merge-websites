@@ -44,11 +44,11 @@ const text=node=>typeof node==='string'||typeof node==='number'?String(node):nod
 const find=(tree,predicate)=>walk(tree).find(predicate);
 const button=(tree,label)=>find(tree,node=>node.type==='button'&&text(node)===label);
 let tree=render();
-assert.equal(walk(tree).filter(node=>node.type?.name==='GalleryWork').length,12,'the first page shows twelve projects');
+assert.equal(walk(tree).filter(node=>node.type?.name==='GalleryWork').length,18,'the first page shows eighteen projects');
 assert.equal(walk(tree).filter(node=>node.props?.className==='editorial-gallery').length,1,'products and concepts share one project gallery');
 for(const label of ['A starting point','Original directions','websites available','design studies','From the playground']) assert.ok(!text(tree).includes(label),`collection omits ${label}`);
 button(tree,'Load more designs').props.onClick({detail:1}); tree=render();
-assert.equal(walk(tree).filter(node=>node.type?.name==='GalleryWork').length,15,'load more appends every remaining entry');
+assert.equal(walk(tree).filter(node=>node.type?.name==='GalleryWork').length,21,'load more appends every remaining entry');
 assert.equal(button(tree,'Load more designs'),undefined,'load button disappears at end');
 find(tree,node=>node.type?.name==='CollectionControls').props.update({query:'skincare'}); tree=render();
 assert.equal(walk(tree).filter(node=>node.type?.name==='GalleryWork').length,1); assert.equal(urls.at(-1),'/collection?q=skincare');

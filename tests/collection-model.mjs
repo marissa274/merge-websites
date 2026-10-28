@@ -16,7 +16,7 @@ export const products = [
     { id:'three',slug:'fresh',name:'Fresh',category:'Food & drink',description:'Restaurant launch',tags:'malformed JSON',price:5000,featured:0,published:1,image_id:null,created_at:now-10*86400000,purchase_count:0 },
 ];
 const entries = buildEntries(products);
-assert.equal(entries.length,15); assert.equal(entries.filter(e=>e.kind==='study').length,12);
+assert.equal(entries.length,21); assert.equal(entries.filter(e=>e.kind==='study').length,18);
 const find = patch => filterEntries(entries,{...EMPTY_FILTERS,...patch},now);
 assert.equal(find({query:'rose'})[0].name,'Rosé','accent-insensitive search');
 assert.equal(find({query:'immersive'})[0].name,'Play','search includes style tags');

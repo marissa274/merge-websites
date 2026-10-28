@@ -23,8 +23,8 @@ export type Entry = { id: string; slug: string; name: string; category: string; 
 const fold = (s: string) => s.normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
 export function tagsFor(raw: string): string[] { try { const tags: unknown = JSON.parse(raw); return Array.isArray(tags) ? tags.filter((t): t is string => typeof t === 'string') : []; } catch { return []; } }
 export function buildEntries(products: Product[]): Entry[] {
-    const tones: Tone[] = ['pink', 'violet', 'coral', 'turquoise', 'pink', 'violet', 'yellow', 'lime', 'turquoise', 'coral'];
-    const styles = [['Elegant', 'Minimal'], ['Bold', 'Immersive'], ['Playful', 'Editorial'], ['Bold', 'Editorial'], ['Elegant', 'Minimal'], ['Bold', 'Immersive'], ['Playful', 'Editorial'], ['Bold', 'Minimal'], ['Editorial', 'Immersive'], ['Elegant', 'Playful']];
+    const tones: Tone[] = ['pink', 'violet', 'coral', 'turquoise', 'pink', 'violet', 'yellow', 'lime', 'turquoise', 'coral', 'pink', 'turquoise', 'yellow', 'violet', 'coral', 'lime'];
+    const styles = [['Elegant', 'Minimal'], ['Bold', 'Immersive'], ['Playful', 'Editorial'], ['Bold', 'Editorial'], ['Elegant', 'Minimal'], ['Bold', 'Immersive'], ['Playful', 'Editorial'], ['Bold', 'Minimal'], ['Editorial', 'Immersive'], ['Elegant', 'Playful'], ['Elegant', 'Minimal'], ['Editorial', 'Elegant'], ['Minimal', 'Editorial'], ['Bold', 'Editorial'], ['Elegant', 'Playful'], ['Bold', 'Immersive']];
     const concepts = studies.map((s, i) => ({ ...s, id: `study-${s.slug}`, styles: styles[i], tone: tones[i], kind: 'study' as const, price: null, created: null, popularity: 0, featured: 0 }));
     return [
         ...products.map(p => ({ id: `product-${p.id}`, slug: p.slug, name: p.name, category: p.category, description: `${p.description} ${tagsFor(p.tags).join(' ')}`, styles: STYLE_OPTIONS.filter(style => tagsFor(p.tags).some(tag => fold(tag.replace(/^style:/i, '').trim()) === fold(style))), tone: 'neutral' as Tone, kind: 'product' as const, price: p.price, created: p.created_at || null, popularity: p.purchase_count || 0, featured: p.featured, product: p })),

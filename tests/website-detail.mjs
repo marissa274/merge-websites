@@ -53,7 +53,8 @@ assert.ok(devicePart(html,'tablet').includes('/api/media/tablet'),'tablet shows 
 const ownScreen=(markup,kind)=>{const part=devicePart(markup,kind),cut=part.indexOf('device-companion');return cut<0?part:part.slice(0,cut);};
 for(const kind of ['desktop','mobile','tablet'])assert.ok(!new RegExp('/api/media/(?!'+kind+'\\b)').test(ownScreen(html,kind)),'no other screenshot inside '+kind);
 const companions=html.match(/device-companion-(desktop|tablet)[\s\S]*?<\/div><\/div><\/div>/g)||[];
-assert.equal(companions.length,2,'a companion phone beside the laptop and the tablet');
+assert.equal(companions.length,1,'only the laptop keeps a decorative phone');
+assert.ok(!devicePart(html,'tablet').includes('device-companion'),'no duplicate phone beside the tablet');
 assert.ok(companions.every(c=>c.includes('/api/media/mobile')&&!/\/api\/media\/(?!mobile)/.test(c)&&c.includes('aria-hidden="true"')&&!c.includes('<button')),'companions repeat only the mobile capture, decoratively');
 assert.ok(devicePart(html,'mobile').includes('9:41')&&devicePart(html,'tablet').includes('tablet-home'),'phone status bar and tablet home button');
 assert.ok(html.indexOf('data-device="desktop"')<html.indexOf('device-pair')&&html.indexOf('data-device="mobile"')<html.indexOf('data-device="tablet"'),'laptop first, then mobile left and tablet right');
@@ -67,7 +68,7 @@ assert.ok(devicePart(heroOnly,'tablet').includes('Tablet screenshot coming soon'
 assert.ok(render({presentation:presentation.normalizePresentation({})}).includes('Desktop screenshot coming soon'),'showcase still renders with no media');
 const conceptHtml=render({concept:true,product:undefined,slug:'muse',presentation:presentation.normalizePresentation({})});
 for(const kind of ['desktop','mobile','tablet'])assert.ok(devicePart(conceptHtml,kind).includes('concept-site')&&devicePart(conceptHtml,kind).includes('muse.')&&!devicePart(conceptHtml,kind).includes('/api/media/')&&!devicePart(conceptHtml,kind).includes('coming soon'),'concept renders its own live site on '+kind);
-assert.equal((conceptHtml.match(/device-companion-/g)||[]).length,2,'concept companions show the same live site');
+assert.equal((conceptHtml.match(/device-companion-/g)||[]).length,1,'only the laptop has a concept companion');
 assert.ok(devicePart(conceptHtml,'mobile').includes('9:41'));
 const composed=render({presentation:presentation.normalizePresentation({previews:[{id:'tablet-art',role:'tablet',framing:'composed'}]})});
 assert.ok(composed.includes('device-stage-composed')&&!devicePart(composed,'tablet').includes('device-body'),'finished mockups are not framed twice');

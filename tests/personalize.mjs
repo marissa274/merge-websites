@@ -40,9 +40,10 @@ const page=load('app/personalize.tsx',{'./personalize-model':model,'./concept-si
 const muse={kind:'concept',slug:'muse',name:'MUSE',category:'Beauty',image:'/beauty.jpg',palette:{background:'#f1c3cd',ink:'#572739',accent:'#572739',accentInk:'#fff8fb'}};
 const render=props=>renderToStaticMarkup(React.createElement(page.Personalize,{model:{...product,image:'/api/media/hero'},pricing,base:90000,user:{fullName:'Ana',email:'ana@example.test'},...props}));
 let html=render();
-for(const title of ['Your website','Visual identity','Content','Features','Budget &amp; estimate','Your details','Review'])assert.ok(html.includes('>'+title+'</h2>'),title);
+for(const title of ['Visual identity','Content','Features','Budget &amp; estimate','Your details','Review'])assert.ok(html.includes('>'+title+'</h2>'),title);
+assert.equal((html.match(/class="pz-step" hidden=""/g)||[]).length,5,'only one of six stages is visible');
 assert.ok(!html.includes('name="model"')&&!html.includes('MUSE'),'no website picker: only the chosen website');
-assert.ok(html.includes('/api/media/hero')&&html.includes('Bloom Studio')&&html.includes('href="/collection/bloom"')&&html.includes('Choose another website'));
+assert.ok(html.includes('/api/media/hero')&&html.includes('Bloom Studio')&&html.includes('href="/collection/bloom"')&&html.includes('Change website'));
 assert.ok(html.includes('Request Customization')&&!html.includes('Sign in to request'));
 assert.ok(html.includes('+$400.00')&&html.includes('On quote')&&html.includes('Included'),'each option shows its price, quote or inclusion');
 assert.ok(html.includes('$2,150.00'),'estimate = template + setup');assert.ok(html.includes('value="Ana"')&&html.includes('value="ana@example.test"'));

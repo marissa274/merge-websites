@@ -53,3 +53,22 @@ html[data-motion=reduced] .search-reveal,html[data-motion=reduced] .discovery-me
 .collection-gallery-page .collection-editorial-intro{align-items:center;flex-direction:row}
 @media(max-width:63.99rem){.collection-gallery-page .collection-editorial-intro{align-items:flex-start;flex-wrap:wrap}}
 .discovery-menu :focus-visible,.collection-discovery :focus-visible{outline:2px solid var(--color-focus);outline-offset:3px}
+
+/* Collection starts in the same black as the studio; artwork colors emerge below the introduction. */
+html:has(.collection-gallery-page){background:#000;color-scheme:dark}
+body:has(.collection-gallery-page){--color-paper:#000;--color-paper-2:#17171b;--color-paper-3:#232328;--color-ink:#f9f6f7;--color-ink-2:#e1dce2;--color-muted:#b8afb8;--color-rule:#37343d;--color-input:#817b89;--color-accent:var(--fx-pink);--color-accent-ink:#09090b;--color-focus:var(--fx-turquoise);--color-error:#ffa69a;--nav-surface:#161216e8;--nav-border:#ffffff24;background:#000;color:var(--color-ink)}
+.collection-gallery-page .collection-atmosphere>span{background:color-mix(in srgb,var(--gallery-glow) 22%,#000)}
+.collection-gallery-page:not([data-gallery-scrolled=true]) .collection-atmosphere>span{opacity:0}
+.mockup-eclat{--mock-paper:var(--fx-pink);--mock-ink:#572739;--mock-accent:#a24e67}
+.mockup-terra{--mock-paper:var(--fx-turquoise);--mock-ink:#182c29;--mock-accent:#4e7865}
+.mockup-frame{--mock-paper:var(--fx-yellow);--mock-ink:#422b22;--mock-accent:#9c5a37}
+.mockup-atelier{--mock-paper:var(--fx-violet);--mock-ink:#140d24;--mock-accent:var(--fx-pink)}
+.mockup-bloom{--mock-paper:var(--fx-coral);--mock-ink:#422b22;--mock-accent:#793b4c}
+.mockup-orbit{--mock-paper:var(--fx-lime);--mock-ink:#09090b;--mock-accent:#536e26}
+.mockup-eclat .mockup-headline,.mockup-terra .mockup-headline,.mockup-bloom .mockup-headline{font-family:var(--font-concept);font-weight:400}
+.mockup-eclat .mockup-art{inset:16% -5% 32% 25%;transform:rotate(18deg)}
+.mockup-terra .mockup-art{inset:14% -10% 28% 25%;transform:rotate(-28deg)}
+.mockup-frame .mockup-art{inset:19% -7% 31% 14%;transform:rotate(-10deg)}
+.mockup-atelier .mockup-art{inset:15% -10% 32% 20%;transform:rotate(20deg)}
+.mockup-bloom .mockup-art{inset:14% 0 31% 25%;transform:rotate(-24deg)}
+.mockup-orbit .mockup-art{inset:12% -15% 29% 5%;transform:rotate(25deg)}

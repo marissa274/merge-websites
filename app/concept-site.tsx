@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
-import { ArrowUpRight, Menu, Gamepad2, Flower2, AudioLines, Sun, MoveUpRight, Shapes, Coffee } from 'lucide-react';
+import { ArrowUpRight, Menu, Gamepad2, Flower2, AudioLines, Sun, MoveUpRight, Shapes, Coffee, Gem, Leaf, Camera, Palette, Scissors, Orbit } from 'lucide-react';
 import type { Presentation } from './product-presentation';
 import { conceptCovers } from './studies';
 const icon = { 'aria-hidden': true as const, strokeWidth: 1.5 };
@@ -8,6 +8,12 @@ const icon = { 'aria-hidden': true as const, strokeWidth: 1.5 };
 // It is rendered live at each device's CSS viewport and reflows with container queries, so the laptop, tablet and phone show the same site in its own layout.
 type Site = { brand: string; nav: string[]; title: string[]; intro: string; action: string; items: string[]; image?: string; alt?: string; art?: typeof Sun };
 const SITES: Record<string, Site> = {
+    eclat: { brand: 'éclat', nav: ['Objects', 'Stories', 'Studio'], title: ['A little', 'brilliance.'], intro: 'Jewelry with a sculptural soul.', action: 'Discover the pieces', items: ['Rings', 'Necklaces', 'Earrings'], art: Gem },
+    terra: { brand: 'terra', nav: ['Flowers', 'Occasions', 'Studio'], title: ['Naturally', 'yours.'], intro: 'Seasonal stems. Lasting impressions.', action: 'Find your flowers', items: ['Seasonal bouquets', 'Wedding flowers', 'Botanical objects'], art: Leaf },
+    frame: { brand: 'FRAME', nav: ['Portraits', 'Places', 'About'], title: ['Look', 'a little closer.'], intro: 'Ordinary moments. Another perspective.', action: 'View selected work', items: ['Portraits', 'Places', 'Personal stories'], art: Camera },
+    atelier: { brand: 'ATELIER', nav: ['Work', 'Studio', 'Approach'], title: ['Ideas,', 'with form.'], intro: 'Independent minds. Expressive identities.', action: 'Explore the projects', items: ['Brand identities', 'Digital experiences', 'Art direction'], art: Palette },
+    bloom: { brand: 'bloom', nav: ['Services', 'Salon', 'Team'], title: ['Your kind', 'of beautiful.'], intro: 'A fresh cut. A new feeling.', action: 'Explore the services', items: ['Cut & style', 'Color', 'Care rituals'], art: Scissors },
+    orbit: { brand: 'ORBIT', nav: ['Products', 'Approach', 'Studio'], title: ['Make your', 'next move.'], intro: 'Digital ideas, brought into focus.', action: 'Meet the studio', items: ['Product strategy', 'Interface design', 'Development'], art: Orbit },
     muse: { brand: 'muse.', nav: ['Rituals', 'Care', 'About'], title: ['Soft is', 'powerful.'], intro: 'A little care. A lot of you. Feel-good essentials for every day.', action: 'Find your ritual', items: ['Cleanse gently', 'Hydrate deeply', 'Glow naturally'], image: conceptCovers['muse'], alt: 'Beauty products in warm light' },
     offgrid: { brand: 'OFFGRID®', nav: ['Worlds', 'Modes', 'Community'], title: ['Play', 'your way.'], intro: 'Your world. Your rules. Make your next move.', action: 'Press play', items: ['Explore', 'Compete', 'Create'], art: Gamepad2 },
     sunday: { brand: 'sunday', nav: ['Menu', 'Visit', 'Events'], title: ['Made', 'to share.'], intro: 'Good food. Good company. A table for your people.', action: 'Book a table', items: ['Something fresh', 'Something crispy', 'Something sweet'], image: conceptCovers['sunday'], alt: 'A colorful dish prepared to share' },

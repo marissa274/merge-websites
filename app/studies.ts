@@ -12,6 +12,12 @@ studies.push(
     { slug: 'pulse', name: 'PULSE', category: 'Fitness', tone: 'pulse', description: 'A bold training studio concept. High-contrast lime, kinetic type and a direct route to your next session.' },
     { slug: 'gallery-18', name: 'GALLERY 18', category: 'Creative', tone: 'gallery', description: 'A contemporary art gallery concept. A turquoise canvas, original graphic compositions and an exhibition-first structure.' },
     { slug: 'casa', name: 'CASA', category: 'Food & drink', tone: 'casa', description: 'A neighborhood café concept. Warm coral, thoughtful menus and an inviting place to pause.' },
+    { slug: 'eclat', name: 'ÉCLAT', category: 'Jewelry', tone: 'eclat', description: 'Sculptural jewelry, considered details and a personal kind of brilliance.' },
+    { slug: 'terra', name: 'TERRA', category: 'Flowers & plants', tone: 'terra', description: 'Seasonal flowers and botanical compositions for everyday occasions.' },
+    { slug: 'frame', name: 'FRAME', category: 'Photography', tone: 'frame', description: 'An image-led photography portfolio for portraits, places and personal stories.' },
+    { slug: 'atelier', name: 'ATELIER', category: 'Design', tone: 'atelier', description: 'An independent design studio portfolio with bold type and an expressive project index.' },
+    { slug: 'bloom', name: 'BLOOM', category: 'Beauty', tone: 'bloom', description: 'A beauty salon concept with a warm visual identity and a clear service menu.' },
+    { slug: 'orbit', name: 'ORBIT', category: 'Technology', tone: 'orbit', description: 'A digital product studio concept with precise typography and an electric lime palette.' },
 );
 
 // Cover photography of the concepts that have one; shared by concept pages and the personalization model picker.

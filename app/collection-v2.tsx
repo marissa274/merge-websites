@@ -8,7 +8,7 @@ import { GalleryWork, useGalleryPurchase } from './gallery-work';
 import { GalleryAtmosphere } from './gallery-motion';
 import { buildEntries, EMPTY_FILTERS, filterEntries, filterURL, readFilters, SORT_OPTIONS, STYLE_OPTIONS, type Filters } from './collection-model';
 const ip = { 'aria-hidden': true as const, strokeWidth: 1.6 };
-const PAGE_SIZE = 12;
+const PAGE_SIZE = 18;
 
 export function CollectionV2({ products, initialSearch = '' }: { products: Product[]; initialSearch?: string }) {
     const root = useRef<HTMLElement>(null), loadButton = useRef<HTMLButtonElement>(null);
@@ -21,6 +21,13 @@ export function CollectionV2({ products, initialSearch = '' }: { products: Produ
     const categories = [...new Set(entries.map(e => e.category))];
     const active = filters.categories.length + filters.styles.length + Number(!!filters.min || !!filters.max) + Number(filters.fresh) + Number(filters.purchased);
     const signature = visible.map(e => e.id).join('|');
+    useEffect(() => {
+        const host = root.current;
+        if (!host) return;
+        const sync = () => { host.dataset.galleryScrolled = String(window.scrollY > 120); };
+        sync(); window.addEventListener('scroll', sync, { passive: true });
+        return () => { window.removeEventListener('scroll', sync); delete host.dataset.galleryScrolled; };
+    }, []);
     useEffect(() => {
         const read = () => { setFilters(readFilters(location.search)); setLimit(PAGE_SIZE); };
         read(); window.addEventListener('popstate', read);
