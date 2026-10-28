@@ -119,3 +119,7 @@ html[data-motion=reduced] .website-detail *,html[data-motion=reduced] .detail-re
 @media(max-width:63.99rem){.device-desktop{width:84%}}
 @media(max-width:47.99rem){.device-stage-desktop{padding:20px 12px 28px}.device-desktop{width:86%}.device-companion.device-companion-desktop{width:18%;right:3%;bottom:9%}.device-pair{grid-template-columns:minmax(0,1fr)}.device-pair .device-stage{aspect-ratio:.82}.device-mobile{width:58%}.device-tablet{width:68%}.device-tablet.is-landscape{width:92%}.device-companion.device-companion-tablet{width:26%}}
 @media(forced-colors:active){.device-body,.laptop-base,.device-placeholder{border:1px solid CanvasText}}
+
+/* Keep the tablet on its own, without the adjacent or overlaid phone. */
+.device-pair.device-tablet-only{grid-template-columns:minmax(0,1fr);width:min(100%,760px);margin-inline:auto}
+.device-tablet-only .device-stage{aspect-ratio:.95}

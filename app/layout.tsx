@@ -19,7 +19,15 @@ export const metadata: Metadata = {
     title: { default: 'MK LAB — Websites with a point of view', template: '%s — MK LAB' },
     description: 'Designed to stand out. Built to be yours. Explore MK LAB, an independent creative studio and premium website marketplace.',
     openGraph: { title: 'MK LAB', description: 'Designed to stand out. Built to be yours.', images: ['/architecture.jpg'] },
-    icons: { icon: '/favicon.svg' }
+    icons: {
+        icon: [
+            { url: '/favicon-cocktail-32.png', type: 'image/png', sizes: '32x32' },
+            { url: '/favicon-cocktail-192.png', type: 'image/png', sizes: '192x192' },
+            { url: '/favicon-cocktail-512.png', type: 'image/png', sizes: '512x512' },
+        ],
+        shortcut: '/favicon.ico',
+        apple: { url: '/apple-touch-icon-cocktail.png', sizes: '180x180', type: 'image/png' },
+    }
 };
 export default function RootLayout({ children }: {
     children: React.ReactNode;

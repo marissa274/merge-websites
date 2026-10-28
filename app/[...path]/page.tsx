@@ -11,7 +11,7 @@ import { parsePricing, type Model } from '../personalize-model';
 import { NewConceptPage } from '../home-v2';
 import { buildEntries } from '../collection-model';
 import type { Metadata } from 'next';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { ArrowUpRight, ArrowLeft, LockKeyhole } from 'lucide-react';
 import { db, config, listProducts, getSettings, ownedData, currentUser, isAdmin, upsertUser, approvedProductMedia } from '../data';
 import { Home, Collection, ProductDetail, Intro, Btn, FAQ, Concept, RequestForm, Cart, Account, Plans, Empty } from '../ui';
@@ -124,7 +124,7 @@ export default async function Page({ params, searchParams }: {
         if (path[1] && !['purchases', 'downloads', 'customizations', 'subscriptions', 'settings'].includes(path[1]))
             notFound();
         if (!user)
-            return <SignIn />;
+            redirect(`/login?return_to=${encodeURIComponent(route)}`);
         if (dbError)
             return <DatabaseUnavailable />;
         try {

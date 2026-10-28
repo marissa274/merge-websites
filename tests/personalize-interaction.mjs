@@ -33,7 +33,6 @@ const active=tree=>find(tree,node=>node.type?.name==='Step'&&node.props.active).
 const go=(tree,i)=>find(tree,node=>node.props?.['aria-controls']===['pz-identity','pz-content','pz-features','pz-budget','pz-contact','pz-review'][i]).props.onClick();
 let tree=render();assert.equal(active(tree),1);
 find(tree,node=>node.props?.value==='colors-brand').props.onChange();tree=render();
-byClass(tree,'pz-next btn'); // Buttons are selected below by their actual class.
 find(tree,node=>node.props?.className==='btn pz-next').props.onClick();tree=render();assert.equal(active(tree),2);
 find(tree,node=>node.props?.['aria-label']==='Add a page').props.onClick();tree=render();
 go(tree,0);tree=render();assert.equal(find(tree,node=>node.props?.value==='colors-brand').props.checked,true,'chosen colors survive going back');
