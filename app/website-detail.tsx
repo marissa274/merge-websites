@@ -79,9 +79,9 @@ function DeviceShowcase({ project }: { project: DetailProject }) {
     const previews = project.presentation.previews, pick = (role: Preview['role']) => previews.find(image => image.role === role);
     const mobile = pick('mobile'), phone = mobile?.framing === 'composed' ? undefined : mobile;
     return <section className="detail-devices detail-shell" data-detail-act aria-labelledby="devices-title">
-        <h2 id="devices-title" data-act-heading>One Website.<br/>Every Screen.<br/>Fully Responsive.</h2>
+        <h2 id="devices-title" data-act-heading>One Website.<br/>Three Devices.<br/>Fully Responsive.</h2>
         <Device kind="desktop" preview={pick('desktop') || pick('hero')} project={project} companion={phone}/>
-        <div className="device-pair device-tablet-only"><Device kind="tablet" preview={pick('tablet')} project={project} companion={phone}/></div>
+        <div className="device-pair"><Device kind="mobile" preview={mobile} project={project}/><Device kind="tablet" preview={pick('tablet')} project={project} companion={phone}/></div>
     </section>;
 }
 function PurchaseActions({ product, canBuy, personalize, onBuy, demo = false }: { product?: Product; canBuy: boolean; personalize: string; onBuy: (product: Product) => void; demo?: boolean }) {
