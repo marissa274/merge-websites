@@ -6,12 +6,12 @@ def html(path):
   assert r.status==200,path
   return r.read().decode()
 home=html('/')
-for text in ['Websites that','make you','look twice','Find your vibe.','About MK LAB','Request a Custom Website','Good design','Explore More','View Our Collection','Pause motion','Switch to light theme']:
+for text in ['Websites that','make you','look twice','Find your vibe.','About MK lab','Request a Custom Website','Let’s give it a home.','Explore More','View Our Collection','Pause motion','Switch to light theme']:
  assert text in home,text
 assert 'data-theme="dark"' in home
 assert 'hero-bubble' not in home and 'scroll-orbit' not in home and 'cta-sculpture' not in home
 assert 'Independent minds.' not in home and 'Creative studio + digital marketplace' not in home
-assert 'cinematic-home' in home and 'water-footer' in home
+assert 'cinematic-home' in home and 'site-footer' in home
 assert 'home-mosaic-gallery' in home and 'hero-line-mask' in home
 assert home.count('data-work="study-') == 6
 assert 'cinema-stage' not in home

@@ -6,6 +6,7 @@ import { parsePresentation, normalizePresentation, presentationKey, resolvePrevi
 import { studies, conceptCovers } from '../studies';
 import { Personalize } from '../personalize';
 import { AuthPage, type AuthMode } from '../auth-page';
+import { appleEnabled } from '../auth-apple';
 import { consumeToken, safeReturn, googleEnabled, mailEnabled } from '../auth';
 import { parsePricing, type Model } from '../personalize-model';
 import { NewConceptPage } from '../home-v2';
@@ -99,7 +100,7 @@ export default async function Page({ params, searchParams }: {
         const entry = !p && typeof conceptSlug === 'string' ? buildEntries([]).find(item => item.kind === 'study' && item.slug === conceptSlug) : undefined;
         const model: Model | null = p ? { kind: 'product', slug: p.slug, name: p.name, category: p.category, image: p.image_id ? `/api/media/${encodeURIComponent(p.image_id)}` : undefined, price: p.price, productId: p.id }
             : entry ? { kind: 'concept', slug: entry.slug, name: entry.name, category: entry.category, image: conceptCovers[entry.slug], palette: normalizePresentation({}, entry.category, entry.tone).palette } : null;
-        return <main id="main" className="shell personalize-page"><Intro title={model ? `Make ${model.name} yours.` : 'Make it unmistakably you.'}>{model ? 'Shape the website you chose around your brand. Your estimate updates as you choose; nothing is charged.' : 'Every personalization starts from a website in the collection.'}</Intro><Personalize model={model} pricing={parsePricing(settings.personalizationPricing)} base={Math.round(Number(settings.personalizationPrice || 0) * 100)} user={user ? { fullName: user.fullName || user.displayName, email: user.email } : null}/></main>;
+        return <main id="main" className="shell personalize-page"><Intro title={model ? `Make ${model.name} yours.` : 'Make it unmistakably you.'}>{model ? null : 'Every personalization starts from a website in the collection.'}</Intro><Personalize model={model} pricing={parsePricing(settings.personalizationPricing)} base={Math.round(Number(settings.personalizationPrice || 0) * 100)} user={user ? { fullName: user.fullName || user.displayName, email: user.email } : null}/></main>;
     }
     if (section === 'contact') {
         const query = await searchParams || {};
@@ -118,7 +119,7 @@ export default async function Page({ params, searchParams }: {
         let verified = false;
         // An email confirmation link marks that account's address as verified, once.
         if (section === 'verify-email') { const owner = await consumeToken(param('token'), 'verify'); if (owner) { await db().prepare("UPDATE auth_identities SET email_verified=1 WHERE user_id=? AND provider='password'").bind(owner).run(); verified = true; } }
-        return <AuthPage mode={section as AuthMode} returnTo={safeReturn(param('return_to'))} concepts={buildEntries([]).filter(entry => entry.kind === 'study').length} user={user ? { email: user.email, displayName: user.displayName, provider: user.provider, verified: user.verified } : null} google={googleEnabled()} mail={mailEnabled()} error={param('error')} token={param('token') || undefined} verified={verified}/>;
+        return <AuthPage mode={section as AuthMode} returnTo={safeReturn(param('return_to'))} concepts={buildEntries([]).filter(entry => entry.kind === 'study').length} user={user ? { email: user.email, displayName: user.displayName, provider: user.provider, verified: user.verified } : null} google={googleEnabled()} apple={appleEnabled()} mail={mailEnabled()} error={param('error')} token={param('token') || undefined} verified={verified}/>;
     }
     if (section === 'account') {
         if (path[1] && !['purchases', 'downloads', 'customizations', 'subscriptions', 'settings'].includes(path[1]))

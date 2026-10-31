@@ -5,7 +5,6 @@ import { ArrowLeft, ArrowUpRight, Expand, X, Check, Monitor, Tablet, Smartphone,
 import type { Product } from './ui';
 import { AnimatedPreview } from './bento-preview';
 import { MosaicStudyPreview } from './collection-preview';
-import { MotionControl } from './home-v2';
 import { DetailMotion } from './detail-motion';
 import { ConceptSite, hasConceptSite } from './concept-site';
 import { WebsiteDemos, DemoTrigger, DemoGrid } from './website-demos';
@@ -91,8 +90,6 @@ export function WebsiteDetail({ project, related = [], commerceReady = false }: 
     const root = useRef<HTMLElement>(null);
     const { purchaseError, buy } = useGalleryPurchase();
     const p = project.presentation, product = project.product, concept = !!project.concept;
-    const description = p.statement || project.description;
-    const heroDescription = description.length > 180 ? `${description.slice(0, 177).replace(/\s+\S*$/, '')}…` : description;
     const hero = p.previews.find(image => image.role === 'hero') || p.previews.find(image => image.role === 'desktop') || p.previews[0];
     const gaps = purchaseGaps(p), canBuy = !!product && !!product.published && commerceReady && !gaps.length;
     const style = { '--detail-paper': p.palette.background, '--detail-ink': p.palette.ink, '--detail-accent': p.palette.accent, '--detail-accent-ink': p.palette.accentInk } as CSSProperties;
@@ -107,10 +104,9 @@ export function WebsiteDetail({ project, related = [], commerceReady = false }: 
         <header className="detail-hero detail-shell">
             <nav className="detail-breadcrumb" aria-label="Breadcrumb"><a href="/collection"><ArrowLeft {...ip}/>Collection</a><span aria-hidden="true">/</span><span aria-current="page">{project.name}</span></nav>
             <h1 className="detail-title"><span className="detail-title-mask"><span data-title-line>{project.name}</span></span></h1>
-            <p className="detail-description">{heroDescription}</p>
             <div className="detail-hero-layout">
                 <div className="detail-hero-stage" data-detail-hero-art><div data-detail-hero-zoom>{concept ? <div className="detail-concept-art"><ConceptArt slug={project.slug}/></div> : hero ? <Screenshot preview={hero} name={project.name} priority/> : <div className="detail-no-preview">Preview coming soon</div>}</div></div>
-                <div className="detail-hero-purchase" aria-label="Purchase options"><p className="detail-price">{price}</p><PurchaseActions product={product} canBuy={canBuy} personalize={personalize} onBuy={buy} demo/>{concept ? <p className="detail-availability">Concept · not for sale</p> : !canBuy && <p className="detail-availability">Checkout is not open yet. <a href="#purchase-information">View purchase information</a></p>}{purchaseError && <p role="alert" className="detail-purchase-error">{purchaseError} <a href="/cart">View bag</a></p>}</div>
+                <div className="detail-hero-purchase" aria-label="Purchase options"><p className="detail-price">{price}</p><PurchaseActions product={product} canBuy={canBuy} personalize={personalize} onBuy={buy} demo/><a className="detail-text-link" href={inquiry}>Ask the studio<ArrowUpRight {...ip}/></a>{concept ? <p className="detail-availability">Concept · not for sale</p> : !canBuy && <p className="detail-availability">Checkout is not open yet. <a href="#purchase-information">View purchase information</a></p>}{purchaseError && <p role="alert" className="detail-purchase-error">{purchaseError} <a href="/cart">View bag</a></p>}</div>
             </div>
         </header>
         <DemoGrid/>
@@ -122,8 +118,8 @@ export function WebsiteDetail({ project, related = [], commerceReady = false }: 
             {facts.length > 0 && <dl className="detail-facts" data-act-content>{facts.map(([label,value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl>}
         </section>}
         <section id="purchase-information" className="detail-purchase-information detail-shell" data-detail-act><h2 data-act-heading>License & delivery.</h2><div data-act-content>{product ? <><dl className="detail-facts">{purchaseFacts.map(([label,value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl>{(!commerceReady || gaps.length > 0) && <details className="detail-purchase-status"><summary>Purchase availability</summary><p>{!commerceReady && 'Payment setup and published policies are required. '}{gaps.length > 0 && `Still to confirm: ${gaps.join(', ').toLowerCase()}.`}</p></details>}<p className="detail-tax-note">Applicable taxes calculated at checkout.</p></> : <p>This design study is not for sale. Scope, price and delivery are agreed in your quote.</p>}<a className="detail-text-link" href="/licenses">License terms<ArrowUpRight {...ip}/></a></div></section>
-        <section id="make-it-yours" className="detail-purchase detail-shell" data-detail-act><h2 data-act-heading>Make it yours.</h2><div className="detail-final-offer" data-act-content><div><h3>{project.name}</h3><p className="detail-price">{price}</p>{product && <p className="detail-final-summary">{product.license}{p.delivery && <> / {p.delivery}</>}</p>}</div><div><PurchaseActions product={product} canBuy={canBuy} personalize={personalize} onBuy={buy}/><a className="detail-text-link" href={inquiry}>Ask the studio<ArrowUpRight {...ip}/></a></div></div></section>
+
         {suggestions.length > 0 && <section className="detail-related detail-shell" data-detail-act><h2 data-act-heading>You Might Also Like.</h2><div className="detail-related-grid" data-act-content>{suggestions.map(item => <article key={item.id}><a href={`/collection/${encodeURIComponent(item.slug)}`}>{item.image_id ? <img src={`/api/media/${encodeURIComponent(item.image_id)}`} alt={`${item.name} website screenshot`} width={1200} height={900} loading="lazy"/> : <div className="detail-related-placeholder">{item.name}</div>}<div><h3>{item.name}</h3><span>{money(item.price)} CAD<ArrowUpRight {...ip}/></span></div></a></article>)}</div></section>}
-        <div className="detail-end detail-shell"><a href="/collection"><ArrowLeft {...ip}/>Back to Collection</a><MotionControl/></div>
+        <div className="detail-end detail-shell"><a href="/collection"><ArrowLeft {...ip}/>Back to Collection</a></div>
     </main></WebsiteDemos>;
 }

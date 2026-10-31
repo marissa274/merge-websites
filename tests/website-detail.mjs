@@ -18,11 +18,12 @@ vm.runInNewContext(ts.transpileModule(fs.readFileSync('app/website-detail.tsx','
  if(name==='./gallery-work')return {useGalleryPurchase:()=>({purchaseError:'',buy:()=>buyCount++})};
  return require(name);
 }});
-const product={id:'test',name:'Test Design',slug:'test-design',category:'Beauty',description:'An original website.',price:125000,license:'Single website',published:1,featured:0,image_id:'hero',tags:'[]'};
+const product={id:'test',name:'Test Design',slug:'test-design',category:'Beauty',description:'An original website.',price:125000,license:'One website. No redistribution.',published:1,featured:0,image_id:'hero',tags:'[]'};
 const project={...product,product,presentation:presentation.normalizePresentation({...complete,previews:[...complete.previews,{id:'tablet',role:'tablet',alt:'Tablet website screenshot'}],videos:Array.from({length:6},(_,i)=>({id:'demo-'+i,title:'Demonstration '+i,posterId:'poster-'+i}))})};
 const render=(patch={},props={})=>renderToStaticMarkup(React.createElement(exported.WebsiteDetail,{project:{...project,...patch},...props}));
 let html=render({}, {commerceReady:true,related:[{...product,id:'other',slug:'other',name:'Other design'},product,{...product,id:'draft',name:'Draft',published:0}]});
-for(const text of ['One Website.','Three Devices.','Fully Responsive.','About This Website.','Included pages','Shop integration','React','Single website','Hosting','Make it yours.','Buy Now','Personalize','Watch Website Demo','You Might','Other design'])assert.ok(html.includes(text),text);
+for(const text of ['One Website.','Three Devices.','Fully Responsive.','About This Website.','Included pages','Shop integration','React','One website. No redistribution.','Hosting','Buy Now','Personalize','Watch Website Demo','You Might','Other design'])assert.ok(html.includes(text),text);
+assert.ok(!html.includes('make-it-yours')&&!html.includes('class="detail-description"')&&!html.includes('Pause motion'),'requested duplicate sections and controls are removed');
 assert.ok(html.indexOf('detail-hero-purchase')<html.indexOf('website-demos'));
 assert.ok(!html.includes('>Draft<'));assert.ok(!/<button[^>]*disabled[^>]*>Buy Now/.test(html));assert.ok(html.includes('/personalize/test-design'));assert.ok(html.includes('/contact?demo=test-design'));
 assert.ok(html.includes('Review Homepage screenshot'));assert.ok(html.includes('data-detail-act'));assert.ok(html.includes('$1,250.00'));
@@ -36,7 +37,7 @@ console.log('PASS editorial content order, screenshot controls, actual related p
 assert.equal((render().match(/class="demo-card"/g)||[]).length,6);
 assert.ok(!render().includes('<video'),'video payloads are not rendered until a demo is selected');
 for(const role of ['desktop','mobile','tablet'])assert.ok(render().includes('data-device="'+role+'"'));
-const ordered=['detail-hero-layout','detail-demo-section','detail-devices','detail-about','detail-included','detail-purchase-information','detail-purchase detail-shell','detail-related'];
+const ordered=['detail-hero-layout','detail-demo-section','detail-devices','detail-about','detail-included','detail-purchase-information','detail-related'];
 const full=render({}, {related:[{...product,id:'other'}]});
 for(let i=1;i<ordered.length;i++)assert.ok(full.indexOf(ordered[i-1])<full.indexOf(ordered[i]),ordered[i]);
 assert.ok(!render().includes('Step inside'));assert.ok(!render().includes('Public screenshots can be visually recreated'));

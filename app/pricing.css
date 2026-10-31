@@ -1,4 +1,4 @@
-/* Hallmark · macrostructure: Three floating organic offers · tone: expressive editorial · theme: existing MK LAB
+ce/* Hallmark · macrostructure: Three floating organic offers · tone: expressive editorial · theme: existing MK LAB
  * Pre-emit critique (code): P5 H4 E4 S5 R4 V5. Cloud-shaped SVG silhouettes follow the user's sketch. */
 :root { --pricing-card-ink: #271c25; }
 .pricing-editorial { padding: 40px max(20px, env(safe-area-inset-left)) 80px; overflow: clip; color: var(--color-ink); background: var(--color-paper); }
@@ -79,7 +79,7 @@ html[data-theme=light] .pricing-comparison thead th:not(:first-child) { color: v
     .pricing-offers:hover :is(.pricing-drift, .pricing-float-shadow) { animation-play-state: paused; }
     .pricing-paper-cta:hover { color: var(--offer-color); background: var(--pricing-card-ink); }
     .pricing-final-cta:hover { background: var(--fx-coral); }
-    .pricing-compare-link:hover, }
+}
 @media (prefers-reduced-motion: no-preference) {
     html:not([data-motion=reduced]) .pricing-drift { animation: pricing-float 7s var(--ease-in-out) infinite; }
     html:not([data-motion=reduced]) .pricing-float-shadow { animation: pricing-shadow 7s var(--ease-in-out) infinite; }

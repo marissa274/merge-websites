@@ -81,7 +81,7 @@ export function Personalize({ model, pricing, base, user }: { model: Model | nul
     const breakdown = <ul className="pz-lines">{result.lines.map(line => <li key={line.id}><span>{line.label}</span><span>{formatAmount(line.amount)}</span></li>)}</ul>;
     return <div className="pz">
         <aside className="pz-preview-column" aria-label="Your selected website and estimate">
-            <div className="pz-preview-label"><span>Your starting point</span><a className="pz-change" href="/collection">Change website<ArrowUpRight {...ip}/></a></div>
+            <div className="pz-preview-label"><a className="pz-change" href="/collection">Change website<ArrowUpRight {...ip}/></a></div>
             <div className="pz-site"><div className="pz-site-preview">{model.kind === 'concept' && model.palette ? <ConceptSite slug={model.slug} palette={model.palette} viewport="desktop"/> : model.image ? <img src={model.image} alt={`${model.name} website`} width={1600} height={1000}/> : <span translate="no">{model.name}</span>}</div>
                     <div className="pz-site-info"><span className="pz-site-meta">{model.kind === 'product' ? `${model.category} / ${model.price ? formatAmount(model.price) : 'Price on request'}` : `${model.category} / Concept`}</span><p className="pz-site-name" translate="no">{model.name}</p><a className="text-link" href={model.kind === 'product' ? `/collection/${encodeURIComponent(model.slug)}` : `/concepts/${encodeURIComponent(model.slug)}`}>View this website<ArrowUpRight {...ip}/></a></div></div>
             <div className="pz-summary-card"><div className="pz-estimate-head"><span>Your estimate</span><div>{total}</div></div>{breakdown}<p className="pz-fineprint">CAD, before taxes. Your quote is confirmed before any payment.</p></div>

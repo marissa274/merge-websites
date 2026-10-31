@@ -13,6 +13,7 @@ import './about.css';
 import './contact.css';
 import './pricing.css';
 import './home-faq.css';
+import './site-refinement.css';
 import { Header, Footer } from './ui';
 export const metadata: Metadata = {
     metadataBase: new URL('https://mek-lab-studio.sasabelle.chatgpt.site'),

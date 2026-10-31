@@ -2,7 +2,7 @@
 // Passwords use PBKDF2-SHA256; sessions and email-link tokens are random and stored only as SHA-256 hashes.
 import { env } from 'cloudflare:workers';
 import type { ChatGPTUser } from './chatgpt-auth';
-export type AccountUser = ChatGPTUser & { provider: 'chatgpt' | 'password' | 'google'; verified: boolean };
+export type AccountUser = ChatGPTUser & { provider: 'chatgpt' | 'password' | 'google' | 'apple'; verified: boolean };
 export const SESSION_COOKIE = 'mk_session';
 export const OAUTH_COOKIE = 'mk_oauth';
 const SESSION_DAYS = 30, ITERATIONS = 100_000;
@@ -62,14 +62,14 @@ export async function sessionUser(cookieHeader: string | null): Promise<AccountU
         (SELECT MAX(email_verified) FROM auth_identities WHERE user_id=u.id) AS verified
         FROM auth_sessions s JOIN users u ON u.id=s.user_id WHERE s.id=?`).bind(await sha256(token)).first<{ id: string; email: string; name: string; expires_at: number; provider: string | null; verified: number | null }>();
     if (!row || row.expires_at < Date.now()) return null;
-    return { userId: row.id, email: row.email, displayName: row.name || row.email, fullName: row.name || null, provider: row.provider === 'google' ? 'google' : 'password', verified: row.verified === 1 };
+    return { userId: row.id, email: row.email, displayName: row.name || row.email, fullName: row.name || null, provider: row.provider === 'apple' ? 'apple' : row.provider === 'google' ? 'google' : 'password', verified: row.verified === 1 };
 }
 
 // Accounts
-export async function findIdentity(provider: 'password' | 'google', subject: string) {
+export async function findIdentity(provider: 'password' | 'google' | 'apple', subject: string) {
     return DB().prepare('SELECT i.id,i.user_id,i.password_hash,i.email_verified,u.email,u.name FROM auth_identities i JOIN users u ON u.id=i.user_id WHERE i.provider=? AND i.subject=?').bind(provider, subject).first<{ id: string; user_id: string; password_hash: string | null; email_verified: number; email: string; name: string }>();
 }
-export async function createAccount(input: { email: string; name: string; provider: 'password' | 'google'; subject: string; passwordHash?: string; verified: boolean }) {
+export async function createAccount(input: { email: string; name: string; provider: 'password' | 'google' | 'apple'; subject: string; passwordHash?: string; verified: boolean }) {
     const userId = `u_${crypto.randomUUID()}`, now = Date.now();
     await DB().batch([
         DB().prepare('INSERT INTO users (id,email,name,created_at) VALUES (?,?,?,?)').bind(userId, input.email, input.name.slice(0, 100) || input.email, now),
@@ -77,7 +77,7 @@ export async function createAccount(input: { email: string; name: string; provid
     ]);
     return userId;
 }
-export async function linkIdentity(userId: string, provider: 'google', subject: string) {
+export async function linkIdentity(userId: string, provider: 'google' | 'apple', subject: string) {
     await DB().prepare('INSERT INTO auth_identities (id,user_id,provider,subject,email_verified,created_at) VALUES (?,?,?,?,1,?)').bind(crypto.randomUUID(), userId, provider, subject, Date.now()).run();
 }
 

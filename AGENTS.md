@@ -10,3 +10,9 @@ This is the primary `marissa274/merge-websites` Git checkout.
 - For Sites publication, use an isolated temporary checkout, copy the intended unified sources there, and preserve the active root hosting project ID and audience. Never run a repository-resetting Sites helper in this checkout.
 - Do not stage environment files, local credentials, dependency folders, runtime databases, or archives.
 - Local unification alone does not authorize changing live deployments or audiences.
+
+# Preserve the user's existing work
+
+- Treat the current unified local application, including Claude's work, as the source of truth for publication.
+- Before publishing, compare the temporary checkout with the intended local sources. Do not publish an older hosted baseline that omits local changes.
+- Do not replace or remove Claude's work, including the Pricing page, without the user's explicit authorization. Apply requested edits on top of the existing work.

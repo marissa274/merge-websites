@@ -3,7 +3,6 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { Search, SlidersHorizontal, X, Check, ChevronDown, ArrowUpRight, ArrowDown } from 'lucide-react';
 import { CollectionControls } from './collection-controls';
 import type { Product } from './ui';
-import { MotionControl } from './home-v2';
 import { GalleryWork, useGalleryPurchase } from './gallery-work';
 import { GalleryAtmosphere } from './gallery-motion';
 import { buildEntries, EMPTY_FILTERS, filterEntries, filterURL, readFilters, SORT_OPTIONS, STYLE_OPTIONS, type Filters } from './collection-model';
@@ -49,7 +48,6 @@ export function CollectionV2({ products, initialSearch = '' }: { products: Produ
             {filters.query && <div className="active-filters"><button onClick={() => update({ query: '' })}>Search: {filters.query}<X {...ip}/><span className="visually-hidden">Clear search</span></button></div>}
             {active > 0 && <div className="active-filters">{filters.categories.map(c => <button key={c} onClick={() => toggle('categories', c)}>{c}<X {...ip}/><span className="visually-hidden">Remove category</span></button>)}{filters.styles.map(style => <button key={style} onClick={() => toggle('styles', style)}>{style}<X {...ip}/><span className="visually-hidden">Remove style</span></button>)}{(filters.min || filters.max) && <button onClick={() => update({ min: '', max: '' })}>{filters.min || '0'}–{filters.max || 'Any'} CAD<X {...ip}/><span className="visually-hidden">Remove price filter</span></button>}{filters.fresh && <button onClick={() => update({ fresh: false })}>New this month<X {...ip}/><span className="visually-hidden">Remove newest filter</span></button>}{filters.purchased && <button onClick={() => update({ purchased: false })}>Purchased<X {...ip}/><span className="visually-hidden">Remove popularity filter</span></button>}<button className="clear-all" onClick={reset}>Clear all</button></div>}
         </section>
-        <div className="collection-results-meta gallery-results-meta"><MotionControl/></div>
         {purchaseError && <p role="alert" className="error">{purchaseError} <a href="/cart">View bag</a></p>}
         {visible.length > 0 && <section className="editorial-gallery" data-count={visible.length} aria-label="Website projects">{visible.map(entry => <GalleryWork key={entry.id} entry={entry} onBuy={buy}/>)}</section>}
         {!filtered.length && <div className="gallery-no-results"><Search {...ip}/><h2>No websites match this mix.</h2><p>Try another name, style or category, or open up your budget.</p><button className="pill-link" onClick={reset}>Clear search & filters<X {...ip}/></button></div>}

@@ -1,5 +1,6 @@
 'use client';
 import { HomeV2, NavV2 } from './home-v2';
+import { SiteFooter } from './site-footer';
 import { SignOutButton } from './auth-form';
 import { WebsiteDetail } from './website-detail';
 import { normalizePresentation } from './product-presentation';
@@ -27,7 +28,7 @@ export type User = {
     displayName: string;
     email: string;
     fullName: string | null;
-    provider?: 'chatgpt' | 'password' | 'google';
+    provider?: 'chatgpt' | 'password' | 'google' | 'apple';
 };
 export const money = (n: number) => new Intl.NumberFormat('en-CA', { style: 'currency', currency: 'CAD' }).format(n / 100);
 const iconProps = { 'aria-hidden': true as const, strokeWidth: 1.5 };
@@ -50,7 +51,7 @@ function writeBag(a: string[]) {
     catch { }
 }
 export function Header() { return <NavV2 />; }
-export function Footer() { return <footer className="footer shell"><div className="footer-top"><Brand /><p>Designed to stand out. Built to be yours.</p><div className="footer-links"><a href="/collection">Collection</a><a href="/about">Studio</a><a href="/merge-launch/index.html">Events</a><a href="/contact">Contact</a></div></div><div className="footer-bottom"><span>© {new Date().getFullYear()} MK lab</span><div className="footer-links"><a href="/terms">Terms</a><a href="/privacy">Privacy</a><a href="/licenses">Licenses</a><a href="/account">My account</a></div><span>All prices in CAD</span></div></footer>; }
+export function Footer() { return <SiteFooter/>; }
 export function Btn({ href, children, secondary = false }: {
     href: string;
     children: React.ReactNode;

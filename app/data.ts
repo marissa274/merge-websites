@@ -46,9 +46,11 @@ export async function ownedData(user: ChatGPTUser) {
 }
 // The host's ChatGPT identity comes first; otherwise an MK lab session (email + password or Google).
 export async function currentUser(): Promise<AccountUser | null> {
+    const local = await sessionUser((await headers()).get('cookie'));
+    if (local) return local;
     const chatgpt = await getChatGPTUser();
     if (chatgpt) return { ...chatgpt, provider: 'chatgpt', verified: true };
-    return sessionUser((await headers()).get('cookie'));
+    return null;
 }
 
 export async function approvedProductMedia(productId: string) { return (await db().prepare('SELECT id,mime FROM product_images WHERE product_id=? AND public=1').bind(productId).all<{ id: string; mime: string }>()).results; }

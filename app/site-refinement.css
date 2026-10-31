@@ -1,0 +1,60 @@
+/* Hallmark · macrostructure: Oversized Studio Sign-off · tone: MK lab dark editorial · anchor hue: brand pink
+ * Shared footer, consistent navigation, home-FAQ details, and full-bleed authentication. */
+.site-footer{--footer-paper:#000;--footer-ink:#f9f6f7;--footer-muted:#b8afb8;--footer-rule:#37343d;background:var(--footer-paper);color:var(--footer-ink);padding:clamp(64px,8vw,128px) var(--page-gutter) 28px;overflow:clip}
+.site-footer-top,.site-footer-bottom{max-width:1600px;margin-inline:auto}
+.site-footer-top{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(240px,.6fr);gap:clamp(48px,10vw,180px);align-items:end}
+.site-footer-invitation>p{font-size:14px;color:var(--footer-muted);margin:0 0 24px}
+.site-footer-invitation h2{font-family:var(--font-display);font-size:clamp(38px,5.4vw,80px);font-weight:500;line-height:1.08;letter-spacing:-.055em}
+.site-footer-contact{display:inline-flex;align-items:center;gap:28px;min-height:52px;margin-top:32px;color:var(--fx-pink);font-size:16px;border-bottom:1px solid currentColor}
+.site-footer-nav{display:grid;gap:0}.site-footer-nav a{display:flex;align-items:center;justify-content:space-between;gap:32px;min-height:56px;border-bottom:1px solid var(--footer-rule);font-size:clamp(18px,2vw,28px)}
+.site-footer-nav svg{width:20px;height:20px}
+.site-footer-wordmark{font-family:var(--font-display);display:block;width:max-content;max-width:100%;margin:clamp(56px,8vw,120px) auto 40px;font-size:clamp(76px,22vw,380px);font-weight:600;letter-spacing:-.075em;line-height:.9;white-space:nowrap}
+.site-footer-wordmark>span{color:var(--fx-pink)}
+.site-footer-bottom{border-top:1px solid var(--footer-rule);padding-top:20px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:16px 32px;font-size:12px;color:var(--footer-muted)}
+.site-footer-bottom nav{display:flex;flex-wrap:wrap;align-items:center;gap:8px 24px}.site-footer-bottom a{display:inline-flex;align-items:center;min-height:44px}.site-footer-up{gap:8px}.site-footer-up svg{width:16px;height:16px}
+.site-footer :focus-visible{outline:2px solid var(--fx-turquoise);outline-offset:6px}
+@media(hover:hover){.site-footer-nav a:hover,.site-footer-bottom a:hover{color:var(--fx-pink)}}
+/* Link visibility does not depend on scroll position. */
+.floating-header[data-compact=true] :is(.nav-studio,.nav-pricing){display:flex}
+.floating-header[data-compact=true] .nav-capsule{transform:none}
+@media(min-width:768px){.floating-header .nav-capsule{max-width:calc(100vw - 32px)}}
+/* Keep the collection title and discovery controls on the same row. */
+.collection-gallery-page .collection-editorial-intro{display:flex;flex-flow:row nowrap;align-items:center;gap:24px}
+.collection-gallery-page .collection-editorial-intro>div:first-child{flex:1;min-width:0}
+.collection-gallery-page .collection-editorial-intro h1{font-size:clamp(30px,4.5vw,72px)}
+.collection-gallery-page .collection-discovery{width:auto;flex:none;margin:0}
+.collection-gallery-page .collection-title-break{display:none}
+.collection-gallery-page .collection-discovery .search-reveal{max-width:24vw}
+.home-faq-list details{color:var(--fx-black)}
+/* Pricing uses the home-page FAQ's colored rounded rows, with its original copy. */
+.pricing-details.home-faq{max-width:1320px;padding-bottom:0}
+.pricing-details .pricing-section-heading{margin:0;display:block}
+.pricing-details.home-faq .home-faq-list details{border:0;border-radius:32px;background:var(--faq-tone);color:var(--fx-black);padding:0}
+.pricing-details.home-faq .home-faq-list summary{min-height:72px;padding:20px 26px 20px 30px;font-size:clamp(16px,1.4vw,19px)}
+.pricing-details.home-faq .home-faq-list summary svg{width:36px;height:36px;padding:9px;border:1px solid currentColor;border-radius:50%}
+.pricing-details.home-faq .home-faq-list details>p{padding:0 30px 28px;margin:0;color:inherit;line-height:1.8;font-size:14px}
+/* The website introduction reads vertically: title, then description. */
+.website-detail .detail-about{grid-template-columns:minmax(0,1fr);gap:32px;max-width:1400px}
+.website-detail .detail-about h2{max-width:14ch;font-size:clamp(48px,7vw,104px);line-height:1.04}
+.website-detail .detail-about p{max-width:58ch;font-size:clamp(18px,2vw,28px)}
+.website-detail .detail-title{margin-bottom:32px}
+.pz-preview-label{justify-content:flex-end}
+/* Authentication fills the viewport; artwork is no longer enclosed in a card. */
+body:has(main.auth) .site-footer,body:has(main.auth) .nav-sentinel{display:none}
+body:has(main.auth){background:var(--fx-black)}
+.auth{margin-top:-112px;padding:0;min-height:100svh}
+.auth-card{border:0;border-radius:0;min-height:100svh;height:auto;grid-template-columns:minmax(0,1.35fr) minmax(440px,1fr);overflow:visible}
+.auth-mosaic{border-radius:0;min-height:100svh;padding:8px;height:auto}
+.auth-panel{min-height:100svh;padding:32px clamp(24px,4vw,72px);background:var(--color-paper)}
+.auth-body{max-width:420px;padding-block:48px}
+.auth-body>h1{font-size:clamp(32px,3.2vw,48px)}
+.auth-provider-apple{background:var(--color-ink);color:var(--color-paper);border-color:var(--color-rule)}
+.auth-provider:disabled{cursor:not-allowed;opacity:.55}
+.auth-provider-note{font-size:12px;color:var(--color-muted);margin:0;text-align:center}
+.auth-signed>p{flex-wrap:wrap;justify-content:center}
+@media(max-width:1023px){.auth-card{grid-template-columns:minmax(0,1fr) minmax(360px,1fr)}.auth-mosaic{grid-template-columns:repeat(3,minmax(0,1fr))}.auth-col-4{display:none}.auth-tile-fact>p{display:none}}
+@media(max-width:767px){.site-footer-top{grid-template-columns:minmax(0,1fr);gap:40px}.site-footer-nav{grid-template-columns:repeat(2,minmax(0,1fr));gap:0 24px}.site-footer-bottom{align-items:flex-start;flex-direction:column}.site-footer-wordmark{margin-block:56px 32px;font-size:23vw}.site-footer-bottom nav{gap:4px 20px}.collection-gallery-page .collection-editorial-intro{gap:12px}.collection-gallery-page .collection-editorial-intro h1{font-size:clamp(26px,5.7vw,42px)}.collection-gallery-page .collection-discovery{gap:6px}.collection-gallery-page .discovery-icon{width:44px;height:44px}.collection-gallery-page .collection-discovery .search-reveal{max-width:25vw}.collection-gallery-page .icon-search[data-open=true] .search-reveal{width:100px}.pricing-details.home-faq{grid-template-columns:minmax(0,1fr);gap:32px}.pricing-details .home-faq-heading{position:static}.auth-card{position:relative;grid-template-columns:minmax(0,1fr);isolation:isolate}.auth-mosaic{position:absolute;inset:0;min-height:100%;z-index:-1;opacity:.38}.auth-panel{background:color-mix(in srgb,var(--color-paper) 90%,transparent);margin:0;min-height:100svh;padding:20px 24px;border-radius:0}.auth-body{padding-block:32px}.auth-top{flex-wrap:wrap}.auth-tile-fact{padding:16px}.auth-switch{white-space:normal}}
+@media(max-width:400px){.collection-gallery-page .collection-editorial-intro h1{font-size:24px}.collection-gallery-page .collection-editorial-intro{gap:8px}.site-footer-nav{grid-template-columns:minmax(0,1fr)}}
+@media(prefers-reduced-motion:reduce){.site-footer *{scroll-behavior:auto}}
+@media(hover:hover){.home-faq-list summary:hover svg{background:var(--fx-black);border-color:var(--fx-black)}}
+@media(max-width:767px){.collection-gallery-page .collection-editorial-intro{position:relative}.collection-gallery-page .collection-discovery .icon-search{flex:none}.collection-gallery-page .collection-editorial-intro:has(.icon-search[data-open=true]){padding-bottom:88px}.collection-gallery-page .icon-search[data-open=true] .search-reveal{position:absolute;inset:auto 0 16px;width:auto;max-width:none;border:1px solid var(--color-rule);border-radius:999px;background:var(--color-paper-2)}}
