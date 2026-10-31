@@ -34,22 +34,6 @@ export const money = (n: number) => new Intl.NumberFormat('en-CA', { style: 'cur
 const iconProps = { 'aria-hidden': true as const, strokeWidth: 1.5 };
 export function Mark() { return <span className="brand-mark" aria-hidden="true">{Array.from({ length: 9 }, (_, i) => <i key={i}/>)}</span>; }
 export function Brand() { return <a className="brand mk-wordmark" href="/" aria-label="MK lab home" translate="no">MK lab</a>; }
-function readBag(): string[] {
-    try {
-        const a = JSON.parse(localStorage.getItem('mek-bag') || '[]');
-        return Array.isArray(a) ? a.filter(x => typeof x === 'string').slice(0, 20) : [];
-    }
-    catch {
-        return [];
-    }
-}
-function writeBag(a: string[]) {
-    try {
-        localStorage.setItem('mek-bag', JSON.stringify(a));
-        window.dispatchEvent(new Event('mek-bag'));
-    }
-    catch { }
-}
 export function Header() { return <NavV2 />; }
 export function Footer() { return <SiteFooter/>; }
 export function Btn({ href, children, secondary = false }: {
@@ -107,38 +91,57 @@ export function Empty({ title, body, href = '/collection', label = 'Explore coll
     label?: string;
 }) { return <div className="empty"><ShoppingBag {...iconProps}/><h2>{title}</h2><p>{body}</p><Btn href={href}>{label}</Btn></div>; }
 export function Cart({ products, checkout = false, user, ready = false }: {
-    products: Product[];
-    checkout?: boolean;
-    user: User | null;
-    ready?: boolean;
+    products: Product[]; checkout?: boolean; user: User | null; ready?: boolean;
 }) {
-    const [ids, setIds] = useState<string[]>([]), [loaded, setLoaded] = useState(false), [removed, setRemoved] = useState<string | null>(null), [error, setError] = useState(''), [busy, setBusy] = useState(false);
-    useEffect(() => { setIds(readBag()); setLoaded(true); }, []);
-    const items = products.filter(p => ids.includes(p.id)), subtotal = items.reduce((n, p) => n + p.price, 0);
-    function remove(id: string) { const a = ids.filter(x => x !== id); setIds(a); writeBag(a); setRemoved(id); }
-    async function pay() {
-        setBusy(true);
-        setError('');
-        try {
-            const r = await fetch('/api/checkout', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ items: items.map(x => x.id) }) });
-            const d = await r.json() as {
-                error?: string;
-                message?: string;
-                url?: string;
-                records?: any[];
-            };
-            if (!r.ok)
-                throw Error(d.error);
-            if (!d.url)
-                throw Error('Checkout could not start.');
-            location.assign(d.url);
-        }
-        catch (e) {
-            setError(e instanceof Error ? e.message : 'Checkout could not start. Try again.');
-            setBusy(false);
-        }
+    const [ids, setIds] = useState<string[]>([]), [loaded, setLoaded] = useState(false);
+    const [removed, setRemoved] = useState<{ id: string; position: number } | null>(null), [error, setError] = useState(''), [busy, setBusy] = useState(false);
+    useEffect(() => {
+        const sync = () => {
+            try {
+                const stored: unknown = JSON.parse(localStorage.getItem('mek-bag') || '[]');
+                if (!Array.isArray(stored)) throw Error('Invalid bag');
+                setIds([...new Set(stored.filter((id): id is string => typeof id === 'string'))].slice(0, 20));
+            } catch { setError('Your browser could not read your bag. Please refresh or try another browser.'); }
+            setLoaded(true);
+        };
+        const storage = (event: StorageEvent) => { if (event.key === 'mek-bag' || event.key === null) sync(); };
+        sync(); window.addEventListener('mek-bag', sync); window.addEventListener('storage', storage);
+        return () => { window.removeEventListener('mek-bag', sync); window.removeEventListener('storage', storage); };
+    }, []);
+    const items = ids.map(id => products.find(p => p.id === id)).filter((p): p is Product => !!p);
+    const unavailable = ids.length - items.length, subtotal = items.reduce((sum, p) => sum + p.price, 0);
+    function save(next: string[]) {
+        try { localStorage.setItem('mek-bag', JSON.stringify(next)); setIds(next); setError(''); window.dispatchEvent(new Event('mek-bag')); return true; }
+        catch { setError('Your browser could not save this change. Your bag has not been changed.'); return false; }
     }
-    return <main id="main" className="shell"><Intro title={checkout ? 'Yours, from here.' : 'Your bag.'}>{checkout ? 'Review your selection before continuing to secure payment.' : 'A good starting point for your next chapter.'}</Intro>{!loaded ? <div className="skeleton" aria-label="Loading bag…"/> : !items.length ? <Empty title="Your next website is still out there." body="When you find the one, add it to your bag. Your selection will stay on this device."/> : <div className="checkout-layout section"><div>{items.map(p => <div className="record" key={p.id}><div><h3><a href={`/collection/${p.slug}`}>{p.name}</a></h3><p>{p.license}</p><strong>{money(p.price)} CAD</strong></div>{!checkout && <button className="plain" onClick={() => remove(p.id)}>Remove<X {...iconProps}/></button>}</div>)}{removed && <p className="form-message" role="status">Website removed. <button className="plain" onClick={() => { const a = [...ids, removed]; setIds(a); writeBag(a); setRemoved(null); }}>Undo</button></p>}<a href="/collection" className="text-link">Continue browsing<ArrowUpRight {...iconProps}/></a></div><aside className="order-summary"><h2>Order summary</h2><div className="total-row"><span>Subtotal</span><span>{money(subtotal)}</span></div><div className="total-row"><span>Applicable taxes</span><span>At payment</span></div><div className="total-row total"><span>Total before tax</span><span>{money(subtotal)} CAD</span></div><div style={{ marginTop: 24 }}>{!checkout ? <Btn href="/checkout">Proceed to checkout</Btn> : !user ? <a className="btn" href="/login?return_to=%2Fcheckout">Sign in to continue<LockKeyhole {...iconProps}/></a> : <button className="btn" disabled={!ready || busy} onClick={pay}>{busy ? 'Opening secure payment…' : ready ? 'Continue to payment' : 'Checkout not open yet'}<LockKeyhole {...iconProps}/></button>}</div>{checkout && !ready && <p className="aside-title" style={{ marginTop: 20 }}>Payment setup and published legal terms are required before purchases can open. No payment has been taken.</p>}<p className="error" role="alert">{error}</p></aside></div>}<div style={{ height: 80 }}/></main>;
+    function remove(id: string) { const position = ids.indexOf(id); if (save(ids.filter(item => item !== id))) setRemoved({ id, position }); }
+    function undo() { if (!removed) return; if (!ids.includes(removed.id) && ids.length >= 20) { setError('Your bag is full. Remove a website before restoring this one.'); return; } const next = ids.filter(id => id !== removed.id); next.splice(Math.min(removed.position, next.length), 0, removed.id); if (save(next)) setRemoved(null); }
+    async function pay() {
+        if (busy || !ready || !user || !items.length) return;
+        setBusy(true); setError('');
+        try {
+            const response = await fetch('/api/checkout', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ items: items.map(item => item.id) }) });
+            const data = await response.json() as { error?: string; url?: string };
+            if (!response.ok || !data.url) throw Error(data.error || 'Checkout could not start. Try again.');
+            location.assign(data.url);
+        } catch (cause) { setError(cause instanceof Error ? cause.message : 'Checkout could not start. Try again.'); setBusy(false); }
+    }
+    return <main id="main" className="cart-page shell">
+        <header className="cart-heading"><a className="cart-back" href={checkout ? '/cart' : '/collection'}><ArrowLeft {...iconProps}/>{checkout ? 'Back to bag' : 'Back to collection'}</a><div><h1>{checkout ? 'Almost yours.' : 'Your bag.'}</h1></div>{checkout && <p>Review your websites before continuing to secure payment.</p>}</header>
+        {error && <p className="cart-error" role="alert">{error}</p>}
+        {unavailable > 0 && <div className="cart-unavailable" role="status"><p>{unavailable} {unavailable === 1 ? 'saved website is' : 'saved websites are'} no longer available. {checkout ? 'Only the available websites below are included in your total.' : 'You can remove the unavailable entries from your bag.'}</p>{!checkout && <button type="button" onClick={() => save(items.map(item => item.id))}>Remove unavailable items</button>}</div>}
+        {removed && <p className="cart-undo" role="status">Website removed.<button type="button" onClick={undo}>Undo</button></p>}
+        {!loaded ? <div className="cart-loading" role="status"><div className="skeleton"/><span>Loading your bag…</span></div> : !items.length ? <section className="cart-empty"><div className="cart-empty-art" aria-hidden="true"><span className="cart-empty-cart"/></div><h2>Your next website<br/>is still out there.</h2><a className="btn cart-browse" href="/collection">Explore the collection<ArrowUpRight {...iconProps}/></a></section> : <div className="cart-layout">
+            <section className="cart-items" aria-label="Websites in your bag"><div className="cart-items-heading"><span>Your selection</span><span>Price</span></div>
+                {items.map(p => <article className="cart-item" key={p.id}><a className="cart-item-image" href={`/collection/${encodeURIComponent(p.slug)}`} aria-label={`View ${p.name}`}>{p.image_id ? <img src={`/api/media/${encodeURIComponent(p.image_id)}`} alt={`${p.name} website preview`} width={600} height={450} loading="lazy"/> : <span translate="no">{p.name}</span>}</a><div className="cart-item-info"><p className="cart-category">{p.category}</p><h2><a href={`/collection/${encodeURIComponent(p.slug)}`}>{p.name}</a></h2><p>{p.license}</p><span className="cart-item-quantity">1 website license</span>{!checkout && <button className="cart-remove" type="button" aria-label={`Remove ${p.name} from bag`} onClick={() => remove(p.id)}><X {...iconProps}/>Remove</button>}</div><strong className="cart-item-price">{money(p.price)}<small>CAD</small></strong></article>)}
+                <a className="cart-continue" href={checkout ? '/cart' : '/collection'}>{checkout ? 'Edit your bag' : 'Continue exploring'}<ArrowUpRight {...iconProps}/></a>
+            </section>
+            <aside className="cart-summary" aria-labelledby="cart-summary-title"><div className="cart-summary-top"><ShoppingBag {...iconProps}/><span>{items.length} {items.length === 1 ? 'website' : 'websites'}</span></div><h2 id="cart-summary-title">Your summary.</h2><dl className="cart-totals"><div><dt>Subtotal</dt><dd>{money(subtotal)} CAD</dd></div><div><dt>Taxes</dt><dd>At payment</dd></div><div><dt>Delivery</dt><dd>As listed per website</dd></div><div className="cart-total"><dt>Total before tax</dt><dd>{money(subtotal)}<small>CAD</small></dd></div></dl>
+                {!checkout ? <a className="cart-checkout" href="/checkout">Continue to checkout<ArrowRight {...iconProps}/></a> : !user ? <a className="cart-checkout" href="/login?return_to=%2Fcheckout">Sign in to continue<ArrowRight {...iconProps}/></a> : <button className="cart-checkout" type="button" disabled={!ready || busy} onClick={pay}>{busy ? 'Opening secure payment…' : ready ? 'Continue to payment' : 'Checkout not open yet'}<ArrowRight {...iconProps}/></button>}
+                <p className="cart-secure"><LockKeyhole {...iconProps}/>Payment handled securely by Stripe.</p>{checkout && !ready && <p className="cart-payment-note">Purchases open once payment setup and business policies are ready. No payment has been taken.</p>}
+            </aside>
+        </div>}
+    </main>;
 }
 export function RequestForm({ type, user, product, concept, inquiry, basePrice = 0 }: {
     type: 'contact' | 'personalize';

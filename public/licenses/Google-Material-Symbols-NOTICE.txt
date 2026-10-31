@@ -1,0 +1,3 @@
+Shopping Cart icon from Google Material Symbols / Material Design Icons.
+Source: https://github.com/google/material-design-icons/tree/master/symbols/web/shopping_cart/materialsymbolsoutlined
+Copyright Google. Licensed under Apache License 2.0. The SVG is used unmodified as a CSS mask.

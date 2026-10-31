@@ -58,3 +58,32 @@ body:has(main.auth){background:var(--fx-black)}
 @media(prefers-reduced-motion:reduce){.site-footer *{scroll-behavior:auto}}
 @media(hover:hover){.home-faq-list summary:hover svg{background:var(--fx-black);border-color:var(--fx-black)}}
 @media(max-width:767px){.collection-gallery-page .collection-editorial-intro{position:relative}.collection-gallery-page .collection-discovery .icon-search{flex:none}.collection-gallery-page .collection-editorial-intro:has(.icon-search[data-open=true]){padding-bottom:88px}.collection-gallery-page .icon-search[data-open=true] .search-reveal{position:absolute;inset:auto 0 16px;width:auto;max-width:none;border:1px solid var(--color-rule);border-radius:999px;background:var(--color-paper-2)}}
+/* The main-page black is the shared dark canvas; colored artwork keeps its own palette. */
+html[data-theme=dark]{--color-paper:var(--home-black,#000);background:var(--home-black,#000)}
+html[data-theme=dark] body{--color-paper:var(--home-black,#000);background:var(--home-black,#000)}
+html[data-theme=dark] :is(.pricing-editorial,.cart-page){background:var(--home-black,#000)}
+#home-faq{scroll-margin-top:128px}
+/* Explicit HSL inks and paper tones keep the lime offer readable. */
+.pricing-offer-stage{--offer-ink:hsl(307 18% 10%)}
+.pricing-offer-stage--3{--offer-color:hsl(82 80% 78%);--offer-ink:hsl(95 35% 10%)}
+.pricing-paper,.pricing-paper-content{color:var(--offer-ink,var(--pricing-card-ink))}
+.pricing-paper :is(h2,.pricing-offer-description,.pricing-offer-price,.pricing-offer-note,li){color:inherit}
+.pricing-paper-cta{color:var(--offer-ink);border-color:var(--offer-ink)}
+.pricing-addons .pricing-section-heading h2>span{color:var(--fx-pink)}
+.pricing-addons-list{gap:16px 24px}
+.pricing-addon{--addon-tone:var(--fx-pink);background:color-mix(in srgb,var(--addon-tone) 7%,var(--color-paper));border:1px solid color-mix(in srgb,var(--addon-tone) 24%,transparent);border-radius:20px;padding:24px}
+.pricing-addon:nth-child(4n+2){--addon-tone:var(--fx-coral)}
+.pricing-addon:nth-child(4n+3){--addon-tone:var(--fx-turquoise)}
+.pricing-addon:nth-child(4n+4){--addon-tone:var(--fx-violet)}
+.pricing-addon-amount{color:var(--addon-tone)}
+.site-footer-nav a:nth-child(2){border-bottom-color:color-mix(in srgb,var(--fx-turquoise) 38%,var(--footer-rule))}
+.site-footer-nav a:nth-child(3){border-bottom-color:color-mix(in srgb,var(--fx-coral) 38%,var(--footer-rule))}
+@media(hover:hover){.pricing-paper-cta:hover{color:var(--offer-color);background:var(--offer-ink)}}
+@media(max-width:479px){.pricing-addon{padding:20px}}
+@media(forced-colors:active){.pricing-paper,.pricing-paper-content,.pricing-paper-cta{color:CanvasText}.pricing-addon{border-color:CanvasText}}
+
+.website-detail,.auth-mosaic{background:var(--home-black,#000)}
+html[data-theme=light] .pricing-addon-amount{color:var(--color-ink)}
+html[data-theme=light] .pricing-addons .pricing-section-heading h2>span{color:var(--muse-ink)}
+html[data-theme=light] .cart-page :is(.cart-count,.cart-category,.cart-continue,.cart-unavailable button,.cart-undo button){color:var(--color-accent)}
+:root{--contact-black:var(--home-black,#000)}

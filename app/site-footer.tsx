@@ -7,6 +7,6 @@ export function SiteFooter() {
             <nav className="site-footer-nav" aria-label="Explore MK lab"><a href="/collection">Collection<ArrowUpRight {...ip}/></a><a href="/about">Studio<ArrowUpRight {...ip}/></a><a href="/pricing">Pricing<ArrowUpRight {...ip}/></a><a href="/contact">Contact<ArrowUpRight {...ip}/></a></nav>
         </div>
         <a className="site-footer-wordmark" href="/" aria-label="MK lab home" translate="no">MK lab<span aria-hidden="true">.</span></a>
-        <div className="site-footer-bottom"><span>© {new Date().getFullYear()} MK lab</span><nav aria-label="Account and policies"><a href="/account">My account</a><a href="/faq">FAQ</a><a href="/terms">Terms</a><a href="/privacy">Privacy</a><a href="/licenses">Licenses</a></nav><a className="site-footer-up" href="#main">Back to top<ArrowUp {...ip}/></a></div>
+        <div className="site-footer-bottom"><span>© {new Date().getFullYear()} MK lab</span><nav aria-label="Account and policies"><a href="/account">My account</a><a href="/#home-faq">FAQ</a><a href="/terms">Terms</a><a href="/privacy">Privacy</a><a href="/licenses">Licenses</a></nav><a className="site-footer-up" href="#main">Back to top<ArrowUp {...ip}/></a></div>
     </footer>;
 }
