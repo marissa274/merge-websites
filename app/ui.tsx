@@ -127,7 +127,7 @@ export function Cart({ products, checkout = false, user, ready = false }: {
         } catch (cause) { setError(cause instanceof Error ? cause.message : 'Checkout could not start. Try again.'); setBusy(false); }
     }
     return <main id="main" className="cart-page shell">
-        <header className="cart-heading"><a className="cart-back" href={checkout ? '/cart' : '/collection'}><ArrowLeft {...iconProps}/>{checkout ? 'Back to bag' : 'Back to collection'}</a><div><h1>{checkout ? 'Almost yours.' : 'Your bag.'}</h1></div>{checkout && <p>Review your websites before continuing to secure payment.</p>}</header>
+        <header className="cart-heading">{checkout && <a className="cart-back" href="/cart"><ArrowLeft {...iconProps}/>Back to bag</a>}<div><h1>{checkout ? 'Almost yours.' : 'Your bag.'}</h1></div>{checkout && <p>Review your websites before continuing to secure payment.</p>}</header>
         {error && <p className="cart-error" role="alert">{error}</p>}
         {unavailable > 0 && <div className="cart-unavailable" role="status"><p>{unavailable} {unavailable === 1 ? 'saved website is' : 'saved websites are'} no longer available. {checkout ? 'Only the available websites below are included in your total.' : 'You can remove the unavailable entries from your bag.'}</p>{!checkout && <button type="button" onClick={() => save(items.map(item => item.id))}>Remove unavailable items</button>}</div>}
         {removed && <p className="cart-undo" role="status">Website removed.<button type="button" onClick={undo}>Undo</button></p>}
