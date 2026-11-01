@@ -1,8 +1,8 @@
-// Server-only account sign-in: email + password and Google, alongside the host's ChatGPT sign-in.
+// Server-only website sign-in: email/password, Google and Apple.
 // Passwords use PBKDF2-SHA256; sessions and email-link tokens are random and stored only as SHA-256 hashes.
 import { env } from 'cloudflare:workers';
-import type { ChatGPTUser } from './chatgpt-auth';
-export type AccountUser = ChatGPTUser & { provider: 'chatgpt' | 'password' | 'google' | 'apple'; verified: boolean };
+import type { SiteUser } from './user';
+export type AccountUser = SiteUser & { provider: 'password' | 'google' | 'apple'; verified: boolean };
 export const SESSION_COOKIE = 'mk_session';
 export const OAUTH_COOKIE = 'mk_oauth';
 const SESSION_DAYS = 30, ITERATIONS = 100_000;

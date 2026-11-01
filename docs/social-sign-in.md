@@ -1,23 +1,29 @@
-# Google and Apple sign-in for MK lab
+# Connexion Google et Apple — MK lab
 
-The login and signup pages now offer email/password, Google and Apple. ChatGPT is no longer a login option in these pages. Social buttons remain disabled with a clear explanation until their provider credentials are configured; no successful social sign-in is simulated.
+Le site utilise ses propres sessions pour email/mot de passe, Google et Apple. Aucun compte ChatGPT ni en-tête d’identité de l’hébergeur n’est nécessaire. Les boutons sociaux restent désactivés tant que les identifiants ne sont pas configurés.
 
-Configure credentials as secret production environment variables in Sites hosting. Do not commit credentials or paste private keys in chat.
+En local, placer les secrets dans `.dev.vars` puis redémarrer le serveur. Pour ton futur hébergement, configurer ces secrets dans ton propre environnement serveur. Ne jamais les ajouter à Git ni au code client.
 
 ## Google
 
-Set `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` for a Web application OAuth client. Register the exact callback:
+Configurer `GOOGLE_CLIENT_ID` et `GOOGLE_CLIENT_SECRET` pour un client OAuth Web. Pour le serveur local par défaut, enregistrer exactement :
 
-`https://mek-lab-studio.sasabelle.chatgpt.site/api/auth/google/callback`
+`http://localhost:5173/api/auth/google/callback`
 
-The existing Google flow validates state, PKCE, issuer, audience, expiry and verified email.
+Ouvrir le site avec `localhost`, le même port et le même protocole que le callback enregistré. Pour ton domaine futur, enregistrer également `https://ton-domaine/api/auth/google/callback`.
+
+Le flux valide state, PKCE, issuer, audience, expiration et email vérifié.
 
 ## Apple
 
-Set `APPLE_CLIENT_ID` (Services ID), `APPLE_TEAM_ID`, `APPLE_KEY_ID` and `APPLE_PRIVATE_KEY` (the Sign in with Apple .p8 private key). Enable the Services ID for the website domain and register the exact HTTPS return URL:
+Configurer `APPLE_CLIENT_ID` (Services ID), `APPLE_TEAM_ID`, `APPLE_KEY_ID` et `APPLE_PRIVATE_KEY` (clé privée .p8). Enregistrer ton domaine et l’URL de retour HTTPS :
 
-`https://mek-lab-studio.sasabelle.chatgpt.site/api/auth/apple/callback`
+`https://ton-domaine/api/auth/apple/callback`
 
-The Apple callback receives `form_post`, binds the request with a short-lived Secure/HttpOnly/SameSite=None cookie, exchanges a one-use authorization code using an ES256 client assertion, and verifies the ID token signature with Apple's keys plus issuer, audience, nonce and expiry before creating a local session.
+Apple nécessite une URL HTTPS de domaine valide ; le simple serveur HTTP sur localhost ne suffit pas. Aucun tunnel public n’est lancé automatiquement.
 
-After updating the hosting environment, deploy a saved version to activate the new environment revision. Then verify a real consent/sign-in with each provider. Unit tests use generated signing keys and a real in-memory SQLite database; they do not establish that a production OAuth application is configured correctly.
+Le callback reçoit `form_post`, vérifie state et le cookie Secure/HttpOnly/SameSite=None, échange le code avec une assertion ES256 puis valide la signature, issuer, audience, nonce et expiration du jeton avant de créer une session du site.
+
+## Vérification
+
+Tester un vrai consentement avec chaque fournisseur après configuration. Les tests automatisés utilisent des clés de test générées et SQLite en mémoire ; leur réussite ne configure pas ton application OAuth chez Google ou Apple.

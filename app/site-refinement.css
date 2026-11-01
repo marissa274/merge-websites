@@ -34,9 +34,9 @@
 .pricing-details.home-faq .home-faq-list summary svg{width:36px;height:36px;padding:9px;border:1px solid currentColor;border-radius:50%}
 .pricing-details.home-faq .home-faq-list details>p{padding:0 30px 28px;margin:0;color:inherit;line-height:1.8;font-size:14px}
 /* The website introduction reads vertically: title, then description. */
-.website-detail .detail-about{grid-template-columns:minmax(0,1fr);gap:32px;max-width:1400px}
-.website-detail .detail-about h2{max-width:14ch;font-size:clamp(48px,7vw,104px);line-height:1.04}
-.website-detail .detail-about p{max-width:58ch;font-size:clamp(18px,2vw,28px)}
+/* About reads like License & delivery: section-size heading, body-size copy. */
+.website-detail .detail-about{display:block}
+.website-detail .detail-about p{max-width:55ch;font-size:18px;line-height:1.6;letter-spacing:normal;margin:0 0 16px}
 .website-detail .detail-title{margin-bottom:32px}
 .pz-preview-label{justify-content:flex-end}
 /* Authentication fills the viewport; artwork is no longer enclosed in a card. */
@@ -84,7 +84,32 @@ html[data-theme=dark] :is(.pricing-editorial,.cart-page){background:var(--home-b
 @media(forced-colors:active){.pricing-paper,.pricing-paper-content,.pricing-paper-cta{color:CanvasText}}
 
 .website-detail,.auth-mosaic{background:var(--home-black,#000)}
-html[data-theme=light] :is(.pricing-addon h3,.pricing-addon-amount){color:var(--color-ink)}
 html[data-theme=light] .pricing-addons .pricing-section-heading h2>span{color:var(--muse-ink)}
 html[data-theme=light] .cart-page :is(.cart-count,.cart-category,.cart-continue,.cart-unavailable button,.cart-undo button){color:var(--color-accent)}
 :root{--contact-black:var(--home-black,#000)}
+/* Website details follow the light theme; device stages switch to light studio surfaces. */
+html[data-theme=light] .website-detail{--detail-text:var(--color-ink);--detail-muted:var(--color-muted);--detail-rule:var(--color-rule);--detail-image-outline:color-mix(in srgb,var(--color-ink) 12%,transparent);--detail-device-shadow:oklch(.3 .05 340 / .18);background:var(--color-paper)}
+html[data-theme=light] .website-detail .detail-demo-action{background:color-mix(in srgb,var(--detail-paper) 14%,var(--color-paper-2))}
+html[data-theme=light] .website-detail .demo-thumbnail{background:color-mix(in srgb,var(--detail-paper,var(--fx-violet)) 20%,var(--color-paper-2))}
+html[data-theme=light] .device-stage-desktop{background:radial-gradient(120% 100% at 50% 0%,var(--fx-white),var(--color-paper-2))}
+html[data-theme=light] .device-stage-mobile{background:radial-gradient(80% 60% at 72% 22%,var(--fx-white),var(--color-paper-2) 60%,var(--color-paper-3))}
+html[data-theme=light] .device-stage-mobile::before{border-color:var(--color-paper-3);box-shadow:0 0 0 1px var(--color-rule),inset 0 0 0 1px var(--color-rule)}
+html[data-theme=light] .device-stage-tablet{background:radial-gradient(110% 90% at 50% 20%,var(--fx-white),var(--color-paper-2) 70%)}
+/* Light theme across the site: pages that pin their own dark canvas return to the shared light tokens. */
+html[data-theme=light]{--light-pink:#a8336d;--light-coral:#b44235;--home-black:var(--color-paper);--contact-black:var(--color-paper)}
+html[data-theme=light]:is(:has(.about-editorial),:has(.contact-experience),:has(.collection-gallery-page),:has(.personalize-page)){background:var(--color-paper);color-scheme:light}
+html[data-theme=light] body:is(:has(.cinematic-home),:has(.about-editorial),:has(.contact-experience),:has(.collection-gallery-page),:has(.personalize-page),:has(main.auth)){--color-paper:#fde3ed;--color-paper-2:#f9d5e3;--color-paper-3:#f2c6d8;--color-ink:#25202a;--color-ink-2:#3b3341;--color-muted:#65576b;--color-rule:#e3b2c7;--color-input:#88728b;--color-accent:#5f417b;--color-accent-ink:#fde3ed;--color-focus:#75508f;--color-error:#a52d3e;--color-success:#416020;--nav-surface:#fff0f6db;--nav-border:#59304f22;--word-coral:#b44235;--word-lime:#506a24;--word-violet:#715095;--word-turquoise:#216c67;background:var(--color-paper);color:var(--color-ink)}
+html[data-theme=light] :is(.cinematic-home,.cinematic-home .water-finale){background:var(--color-paper);color:var(--color-ink)}
+html[data-theme=light] .cinematic-home :is(.water-footer,.water-wordmark){color:var(--color-ink)}
+html[data-theme=light] .about-editorial{--about-black:var(--color-paper);--about-white:var(--color-ink);--about-muted:var(--color-muted);--about-pink:var(--light-pink);--about-coral:var(--light-coral)}
+html[data-theme=light] .about-cta--primary{color:var(--color-paper)}
+html[data-theme=light]{--contact-blush:#25202a;--contact-muted:#65576b;--contact-pastel:var(--light-pink);--contact-pink:var(--light-pink);--contact-border:#c99ab0;--contact-field:#f9d5e3;--contact-wine:#e3b2c7}
+html[data-theme=light] .site-footer{--footer-paper:var(--color-paper);--footer-ink:var(--color-ink);--footer-muted:var(--color-muted);--footer-rule:var(--color-rule)}
+html[data-theme=light] :is(.site-footer-contact,.site-footer-wordmark>span){color:var(--light-pink)}
+html[data-theme=light] .pz :is(.pz-submit,.pz-next){background:var(--light-pink);border-color:var(--light-pink);color:var(--color-paper)}
+html[data-theme=light] .cart-browse{background:var(--light-pink);color:var(--color-paper)}
+html[data-theme=light] .pricing-addon h3,html[data-theme=light] .pricing-addon-amount{color:var(--addon-tone)}
+html[data-theme=light] .pricing-addon{--addon-tone:var(--light-pink)}
+html[data-theme=light] .pricing-addon:nth-child(4n+2){--addon-tone:var(--light-coral)}
+html[data-theme=light] .pricing-addon:nth-child(4n+3){--addon-tone:#216c67}
+html[data-theme=light] .pricing-addon:nth-child(4n+4){--addon-tone:#715095}

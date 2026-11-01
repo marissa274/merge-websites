@@ -1,6 +1,6 @@
 import { env } from 'cloudflare:workers';
 import { headers } from 'next/headers';
-import { getChatGPTUser, type ChatGPTUser } from './chatgpt-auth';
+import type { SiteUser } from './user';
 import { sessionUser, type AccountUser } from './auth';
 export type Product = {
     id: string;
@@ -22,15 +22,15 @@ export function db() { if (!env.DB)
     throw new Error('Database is unavailable. Please try again later.'); return env.DB; }
 export function config(key: string) { return (env as unknown as Record<string, string | undefined>)[key] || ''; }
 // Admin access needs a verified email: an unverified password account can never claim an admin address.
-export function isAdmin(user: (ChatGPTUser & { verified?: boolean }) | null) { return !!user && user.verified !== false && config('ADMIN_EMAILS').split(',').map(x => x.trim().toLowerCase()).filter(Boolean).includes(user.email.toLowerCase()); }
-export async function upsertUser(user: ChatGPTUser) { await db().prepare('INSERT INTO users (id,email,name,created_at) VALUES (?,?,?,?) ON CONFLICT(id) DO UPDATE SET email=excluded.email').bind(user.userId, user.email, user.displayName, Date.now()).run(); }
+export function isAdmin(user: (SiteUser & { verified?: boolean }) | null) { return !!user && user.verified !== false && config('ADMIN_EMAILS').split(',').map(x => x.trim().toLowerCase()).filter(Boolean).includes(user.email.toLowerCase()); }
+export async function upsertUser(user: SiteUser) { await db().prepare('INSERT INTO users (id,email,name,created_at) VALUES (?,?,?,?) ON CONFLICT(id) DO UPDATE SET email=excluded.email').bind(user.userId, user.email, user.displayName, Date.now()).run(); }
 export async function listProducts(all = false) { return (await db().prepare(`SELECT p.*, COALESCE(s.purchase_count,0) AS purchase_count FROM products p LEFT JOIN (SELECT i.product_id,COUNT(*) AS purchase_count FROM order_items i JOIN orders o ON o.id=i.order_id WHERE o.status='paid' GROUP BY i.product_id) s ON s.product_id=p.id ${all ? '' : 'WHERE p.published=1'} ORDER BY p.featured DESC,p.created_at DESC`).all<Product>()).results; }
 export async function getSettings() { const rows = (await db().prepare('SELECT * FROM site_settings').all<{
     key: string;
     value: string;
 }>()).results; return Object.fromEntries(rows.map(r => [r.key, r.value])); }
 export const cad = (cents: number) => new Intl.NumberFormat('en-CA', { style: 'currency', currency: 'CAD', maximumFractionDigits: 2 }).format(cents / 100);
-export async function ownedData(user: ChatGPTUser) {
+export async function ownedData(user: SiteUser) {
     await upsertUser(user);
     const results = await db().batch([
         db().prepare('SELECT * FROM orders WHERE user_id=? ORDER BY created_at DESC').bind(user.userId),
@@ -44,13 +44,9 @@ export async function ownedData(user: ChatGPTUser) {
     ]);
     return { orders: results[0].results, requests: results[1].results, subscriptions: results[2].results, downloads: results[3].results, profile: results[4].results[0], messages: results[5].results, inquiries: results[6].results, items: results[7].results };
 }
-// The host's ChatGPT identity comes first; otherwise an MK lab session (email + password or Google).
+// Only a verified website session authenticates a visitor, regardless of hosting headers.
 export async function currentUser(): Promise<AccountUser | null> {
-    const local = await sessionUser((await headers()).get('cookie'));
-    if (local) return local;
-    const chatgpt = await getChatGPTUser();
-    if (chatgpt) return { ...chatgpt, provider: 'chatgpt', verified: true };
-    return null;
+    return sessionUser((await headers()).get('cookie'));
 }
 
 export async function approvedProductMedia(productId: string) { return (await db().prepare('SELECT id,mime FROM product_images WHERE product_id=? AND public=1').bind(productId).all<{ id: string; mime: string }>()).results; }

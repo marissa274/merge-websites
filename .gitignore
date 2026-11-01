@@ -16,6 +16,7 @@
 !.env.example
 !.env.*.example
 .dev.vars*
+!.dev.vars.example
 *.pem
 *.key
 *.sqlite
@@ -25,6 +26,7 @@
 *.db-wal
 **/.wrangler/
 **/.sites-runtime/
+**/.local-runtime/
 
 # Local tooling and OS state
 **/.codex/

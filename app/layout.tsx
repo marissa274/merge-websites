@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { siteUrl } from './site-url';
 import './globals.css';
 import './mek.css';
 import './expressive.css';
@@ -17,7 +18,7 @@ import './site-refinement.css';
 import './cart.css';
 import { Header, Footer } from './ui';
 export const metadata: Metadata = {
-    metadataBase: new URL('https://mek-lab-studio.sasabelle.chatgpt.site'),
+    metadataBase: siteUrl(),
     title: { default: 'MK lab — Websites with a point of view', template: '%s — MK lab' },
     description: 'Designed to stand out. Built to be yours. Explore MK lab, an independent creative studio and premium website marketplace.',
     openGraph: { title: 'MK lab', description: 'Designed to stand out. Built to be yours.', images: ['/architecture.jpg'] },
@@ -33,4 +34,4 @@ export const metadata: Metadata = {
 };
 export default function RootLayout({ children }: {
     children: React.ReactNode;
-}) { return <html lang="en" data-theme="dark" suppressHydrationWarning><head><meta name="theme-color" content="#09090b"/><script dangerouslySetInnerHTML={{ __html: `try{const t=localStorage.getItem('mk-theme');document.documentElement.dataset.theme=t==='light'?'light':'dark';const m=localStorage.getItem('mk-motion');document.documentElement.dataset.motion=m==='reduced'?'reduced':'full';document.querySelector('meta[name="theme-color"]')?.setAttribute('content',t==='light'?'#fff1f5':'#09090b')}catch{}` }}/><link rel="stylesheet" href="/tokens.css"/><link rel="preload" href="/fonts/font-3.ttf" as="font" type="font/ttf" crossOrigin="anonymous"/><link rel="preload" href="/fonts/font-4.ttf" as="font" type="font/ttf" crossOrigin="anonymous"/></head><body><a className="skip" href="#main">Skip to content</a><Header />{children}<Footer /></body></html>; }
+}) { return <html lang="en" data-theme="dark" suppressHydrationWarning><head><meta name="theme-color" content="#09090b"/><script dangerouslySetInnerHTML={{ __html: `try{const t=localStorage.getItem('mk-theme');document.documentElement.dataset.theme=t==='light'?'light':'dark';const m=localStorage.getItem('mk-motion');document.documentElement.dataset.motion=m==='reduced'?'reduced':'full';document.querySelector('meta[name="theme-color"]')?.setAttribute('content',t==='light'?'#fde3ed':'#09090b')}catch{}` }}/><link rel="stylesheet" href="/tokens.css"/><link rel="preload" href="/fonts/font-3.ttf" as="font" type="font/ttf" crossOrigin="anonymous"/><link rel="preload" href="/fonts/font-4.ttf" as="font" type="font/ttf" crossOrigin="anonymous"/></head><body><a className="skip" href="#main">Skip to content</a><Header />{children}<Footer /></body></html>; }

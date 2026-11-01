@@ -21,7 +21,7 @@ export function ContactPage({ prefill }: { prefill?: { name?: string; email?: st
         if (!meta) return;
         const sync = () => { if (meta.content !== '#080709') meta.content = '#080709'; };
         sync(); const observer = new MutationObserver(sync); observer.observe(meta, { attributes: true, attributeFilter: ['content'] });
-        return () => { observer.disconnect(); meta.content = document.documentElement.dataset.theme === 'light' ? '#fff1f5' : '#09090b'; };
+        return () => { observer.disconnect(); meta.content = document.documentElement.dataset.theme === 'light' ? '#fde3ed' : '#09090b'; };
     }, []);
     function close() { setOpen(false); handset.current?.focus({ preventScroll: true }); }
 

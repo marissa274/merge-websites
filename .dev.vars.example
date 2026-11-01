@@ -1,0 +1,15 @@
+# Local Worker bindings. Copy to .dev.vars (npm run setup does this once).
+# Never commit .dev.vars or real credentials.
+SITE_URL=http://localhost:5173
+# Blank means no administrator access. Use exact, verified account emails.
+ADMIN_EMAILS=
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+APPLE_CLIENT_ID=
+APPLE_TEAM_ID=
+APPLE_KEY_ID=
+APPLE_PRIVATE_KEY=
+RESEND_API_KEY=
+MAIL_FROM=
+STRIPE_SECRET_KEY=
+STRIPE_WEBHOOK_SECRET=

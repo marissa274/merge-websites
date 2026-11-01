@@ -35,7 +35,7 @@ export function AboutPage({ story }: { story?: string }) {
         observer.observe(meta, { attributes: true, attributeFilter: ['content'] });
         return () => {
             observer.disconnect();
-            meta.content = document.documentElement.dataset.theme === 'light' ? '#fff1f5' : '#09090b';
+            meta.content = document.documentElement.dataset.theme === 'light' ? '#fde3ed' : '#09090b';
         };
     }, []);
 
